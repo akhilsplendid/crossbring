@@ -1,0 +1,30 @@
+{{- if .Values.batchExtractor.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jobs-batch-extractor
+  namespace: data
+spec:
+  schedule: {{ .Values.batchExtractor.schedule | quote }}
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          {{- if .Values.imagePullSecrets }}
+          imagePullSecrets:
+          {{- toYaml .Values.imagePullSecrets | nindent 12 }}
+          {{- end }}
+          containers:
+            - name: extractor
+              image: {{ .Values.batchExtractor.image | quote }}
+              env:
+                - name: JOBMODEL_DSN
+                  valueFrom:
+                    secretKeyRef:
+                      name: supabase-secrets
+                      key: dsn
+                - name: MODE
+                  value: {{ .Values.batchExtractor.mode | quote }}
+{{- end }}
+

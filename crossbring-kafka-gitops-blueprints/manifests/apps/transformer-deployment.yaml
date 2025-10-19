@@ -19,4 +19,18 @@ spec:
             - { name: TOPIC_JOBS, value: supabase.public.jobs }
             - { name: TOPIC_JOB_DETAILS, value: supabase.public.job_details }
             - { name: TOPIC_OUT, value: jobmodel.stg_jobs }
-
+          readinessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 40
+            periodSeconds: 20
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }
+      imagePullSecrets:
+        - name: ghcr-pull-secret

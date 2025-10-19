@@ -1,0 +1,28 @@
+imagePullSecrets: [] # e.g., [{ name: ghcr-pull-secret }]
+
+transformer:
+  image: ghcr.io/akhilsplendid/crossbring/jobs-transformer:latest
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { cpu: 500m, memory: 512Mi }
+  env:
+    BOOTSTRAP_SERVERS: crossbring-kafka:9092
+    TOPIC_JOBS: supabase.public.jobs
+    TOPIC_JOB_DETAILS: supabase.public.job_details
+    TOPIC_OUT: jobmodel.stg_jobs
+
+rtAnalytics:
+  image: ghcr.io/akhilsplendid/crossbring/jobs-rt-analytics:latest
+  resources:
+    requests: { cpu: 100m, memory: 256Mi }
+    limits: { cpu: 500m, memory: 512Mi }
+  env:
+    BOOTSTRAP_SERVERS: crossbring-kafka:9092
+    TOPIC_IN: jobmodel.stg_jobs
+
+batchExtractor:
+  enabled: true
+  schedule: "*/15 * * * *"
+  image: ghcr.io/akhilsplendid/crossbring/jobs-batch-extractor:latest
+  mode: direct
+

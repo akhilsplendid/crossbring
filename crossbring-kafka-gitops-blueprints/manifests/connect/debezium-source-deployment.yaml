@@ -28,10 +28,23 @@ spec:
             - name: secrets
               mountPath: /etc/connect-secrets
               readOnly: true
+          readinessProbe:
+            httpGet: { path: /connectors, port: 8084 }
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /connectors, port: 8084 }
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests: { cpu: "200m", memory: "512Mi" }
+            limits: { cpu: "1", memory: "1Gi" }
       volumes:
         - name: secrets
           secret:
             secretName: supabase-secrets
+      imagePullSecrets:
+        - name: ghcr-pull-secret
 ---
 apiVersion: v1
 kind: Service
@@ -44,4 +57,3 @@ spec:
     - name: http
       port: 8084
       targetPort: 8084
-
