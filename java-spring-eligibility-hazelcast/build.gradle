@@ -17,7 +17,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'com.hazelcast:hazelcast-spring:5.4.0'
-    implementation 'com.hazelcast:hazelcast-client:5.4.0'
+    implementation 'com.hazelcast:hazelcast:5.4.0'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'io.micrometer:micrometer-registry-prometheus'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
