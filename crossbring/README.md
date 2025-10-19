@@ -8,7 +8,7 @@
 [![jobs-rt-analytics](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--rt--analytics-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/crossbring%2Fjobs-rt-analytics)
 [![jobs-batch-extractor](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--batch--extractor-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/crossbring%2Fjobs-batch-extractor)
 
-Crossbring is a portfolio-ready, production-style data platform aligned to the Tryg360 Data Engineer role. It demonstrates SQL data modeling, Java ETL, CDC with event streams, governance, and GitOps deployment.
+Crossbring is a portfolio-ready, production-style data platform. It demonstrates SQL data modeling, Java ETL, CDC with event streams, governance, and GitOps deployment.
 
 ## Projects
 - crossbring-jobmodel - PostgreSQL JobModel (dims + SCD facts) and views
