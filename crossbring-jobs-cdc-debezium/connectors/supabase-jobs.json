@@ -1,0 +1,20 @@
+{
+  "name": "supabase-jobs",
+  "config": {
+    "connector.class": "io.debezium.connector.postgresql.PostgresConnector",
+    "tasks.max": "1",
+    "database.hostname": "db.lfjnvafmgwgdzyryjftj.supabase.co",
+    "database.port": "5432",
+    "database.user": "postgres",
+    "database.password": "${file:/etc/connect-secrets/supabase.properties:DB_PASSWORD}",
+    "database.dbname": "postgres",
+    "database.server.name": "supabase",
+    "schema.include.list": "public",
+    "table.include.list": "public.jobs,public.job_details",
+    "plugin.name": "pgoutput",
+    "publication.autocreate.mode": "filtered",
+    "slot.name": "debezium_jobs",
+    "tombstones.on.delete": "false"
+  }
+}
+

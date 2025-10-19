@@ -1,11 +1,33 @@
-Projects to showcase skills relevant to Swedish Social Insurance Agency (Försäkringskassan) role. Each repo demonstrates modern system development across Java, Vue, DevOps, containers, and Kubernetes.
+Crossbring Data Platform (Jobs SE)
 
-- java-spring-caseservice — Spring Boot REST service with Gradle, Docker, K8s, Helm, ArgoCD template
-- java-spring-paymentservice-messaging — Spring Boot + ActiveMQ Artemis (JMS) producer/consumer, Docker, K8s, Helm
-- java-spring-eligibility-hazelcast — Spring Boot + Hazelcast caching, Docker, K8s, Helm
-- vue-citizen-portal — Vue 3 + Vite frontend, Docker, K8s, Helm
-- devops-infra-helm-argo — Helm umbrella chart structure, ArgoCD Applications, OpenShift Route examples
+Purpose
+- Portfolio-ready, production-style data platform aligned to Tryg360’s job ad: Java + SQL ETL, CDC, event streams, governance, and GitOps.
 
-Notes
-- All repos use Gradle (Java), Dockerfiles, and Kubernetes manifests; Helm charts and ArgoCD app templates are included for GitOps exposure.
-- These are lean, production-leaning starters you can extend. See each repo README for details and next steps.
+Components
+- crossbring-jobmodel: Postgres schema (dims + SCD facts) and views
+- crossbring-jobs-cdc-debezium: Local Kafka + Schema Registry + Connect + Debezium, connectors, and scripts
+- crossbring-jobs-transformer-java-sql: Kafka Streams join/normalize to JobModel staging
+- crossbring-jobs-rt-analytics: Streaming KPIs (region/day counts)
+- crossbring-jobs-governance-contracts: Data contracts with CI lint
+- crossbring-jobs-marketplace: Trino catalog to query curated data
+- crossbring-kafka-gitops-blueprints: ArgoCD apps + K8s manifests for GitOps deploy
+- crossbring-jobs-batch-extractor: Batch fallback when CDC is restricted
+
+Quickstart (Local)
+1) Apply JobModel: set JOBMODEL_DSN in crossbring-jobmodel/.env and run python crossbring-jobmodel/scripts/apply_sql.py
+2) Start local stack + register connectors: crossbring-jobs-cdc-debezium/scripts/local-up.ps1
+3) Build & run transformer: see crossbring-jobs-transformer-java-sql/README.md
+4) Optional: run Trino and query views
+
+GitOps (Kubernetes)
+1) Install ArgoCD
+2) Apply argo/applications/*.yaml under crossbring-kafka-gitops-blueprints
+3) Create supabase-secrets (see crossbring-kafka-gitops-blueprints/README.md)
+4) Sync apps in Argo; connectors auto-register; CronJob runs batch fallback every 15m
+
+CI
+- .github/workflows/ci.yml builds Java modules and validates governance contracts
+
+Security
+- Secrets are kept out of VCS; use the provided render script or kubectl commands to create K8s secrets.
+

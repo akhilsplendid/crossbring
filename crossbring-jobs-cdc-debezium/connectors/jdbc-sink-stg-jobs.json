@@ -1,0 +1,25 @@
+{
+  "name": "jdbc-sink-stg-jobs",
+  "config": {
+    "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+    "tasks.max": "1",
+    "topics": "jobmodel.stg_jobs",
+
+    "connection.url": "jdbc:postgresql://db.lfjnvafmgwgdzyryjftj.supabase.co:5432/postgres",
+    "connection.user": "postgres",
+    "connection.password": "${file:/etc/connect-secrets/supabase.properties:DB_PASSWORD}",
+
+    "auto.create": "false",
+    "auto.evolve": "false",
+    "insert.mode": "upsert",
+    "pk.mode": "record_value",
+    "pk.fields": "job_id",
+
+    "table.name.format": "jobmodel.stg_jobs",
+
+    "value.converter": "org.apache.kafka.connect.json.JsonConverter",
+    "value.converter.schemas.enable": "false",
+    "key.converter": "org.apache.kafka.connect.storage.StringConverter"
+  }
+}
+
