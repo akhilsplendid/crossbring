@@ -47,3 +47,5 @@ Crossbring is a portfolio-ready, production-style data platform. It demonstrates
 
 ## Notes
 - Supabase logical replication may be restricted; the CronJob fallback (`jobs-batch-extractor`) keeps `jobmodel.stg_jobs` up-to-date.
+
+Status: CI kick at 2025-10-19 15:31:47 UTC
