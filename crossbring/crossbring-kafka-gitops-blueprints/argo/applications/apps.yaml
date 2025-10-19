@@ -10,7 +10,7 @@ spec:
   source:
     repoURL: https://github.com/akhilsplendid/crossbring
     targetRevision: HEAD
-        path: crossbring-kafka-gitops-blueprints/manifests/apps
+    path: crossbring-kafka-gitops-blueprints/manifests/apps
   syncPolicy:
     automated:
       prune: true
