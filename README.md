@@ -4,9 +4,9 @@
 [![Build Java Images](https://github.com/akhilsplendid/crossbring/actions/workflows/build-java-images.yml/badge.svg)](https://github.com/akhilsplendid/crossbring/actions/workflows/build-java-images.yml)
 [![Build Batch Extractor](https://github.com/akhilsplendid/crossbring/actions/workflows/build-batch-extractor.yml/badge.svg)](https://github.com/akhilsplendid/crossbring/actions/workflows/build-batch-extractor.yml)
 
-[![jobs-transformer](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--transformer-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/crossbring%2Fjobs-transformer)
-[![jobs-rt-analytics](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--rt--analytics-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/crossbring%2Fjobs-rt-analytics)
-[![jobs-batch-extractor](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--batch--extractor-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/crossbring%2Fjobs-batch-extractor)
+[![jobs-transformer](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--transformer-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/package/crossbring%2Fjobs-transformer)
+[![jobs-rt-analytics](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--rt--analytics-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/package/crossbring%2Fjobs-rt-analytics)
+[![jobs-batch-extractor](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--batch--extractor-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/package/crossbring%2Fjobs-batch-extractor)
 
 Crossbring is a portfolio-ready, production-style data platform. It demonstrates SQL data modeling, Java ETL, CDC with event streams, governance, and GitOps deployment.
 
