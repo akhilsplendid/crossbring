@@ -11,6 +11,7 @@ jobs:
     env:
       IMAGE_NAME: paymentservice
       IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+      ENABLE_TESTCONTAINERS: true
     steps:
       - uses: actions/checkout@v4
       - name: Pre-pull Artemis image for Testcontainers
@@ -21,6 +22,7 @@ jobs:
             -v $PWD:/app -w /app \
             -v /var/run/docker.sock:/var/run/docker.sock \
             -e DOCKER_HOST=unix:///var/run/docker.sock \
+            -e ENABLE_TESTCONTAINERS=${ENABLE_TESTCONTAINERS} \
             -e TESTCONTAINERS_RYUK_DISABLED=true \
             gradle:8.10.2-jdk21-alpine sh -lc "gradle test --no-daemon"
       - name: Set up Docker Buildx

@@ -1,6 +1,7 @@
 package com.example.paymentservice;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,10 +39,11 @@ class JmsIntegrationTest {
 
     @Test
     void sendAndReceive_onTestQueue() {
+        Assumptions.assumeTrue("true".equalsIgnoreCase(System.getenv("ENABLE_TESTCONTAINERS")),
+                "Skipping JMS Testcontainers test unless ENABLE_TESTCONTAINERS=true");
         jmsTemplate.convertAndSend("test-queue", "hello");
         jmsTemplate.setReceiveTimeout(2000);
         Object msg = jmsTemplate.receiveAndConvert("test-queue");
         assertThat(msg).isEqualTo("hello");
     }
 }
-
