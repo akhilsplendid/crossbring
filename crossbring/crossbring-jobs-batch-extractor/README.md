@@ -17,3 +17,5 @@ Run locally
 - Python: `pip install -r requirements.txt && python extractor.py`
 - Docker: `docker build -t crossbring/jobs-batch-extractor . && docker run --rm -e JOBMODEL_DSN=... -e MODE=direct crossbring/jobs-batch-extractor`
 
+
+CI trigger: 2025-10-19 15:31:47 UTC

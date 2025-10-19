@@ -11,3 +11,5 @@ Run (example)
 - `java -jar target/jobs-transformer.jar`
 - Configure via `src/main/resources/application.properties` (Kafka, Postgres DSN).
 
+
+CI trigger: 2025-10-19 15:31:47 UTC
