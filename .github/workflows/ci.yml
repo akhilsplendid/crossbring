@@ -12,9 +12,9 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
       - name: Build transformer
-        run: mvn -q -f crossbring-jobs-transformer-java-sql/pom.xml -DskipTests package
+        run: mvn -q -f crossbring/crossbring-jobs-transformer-java-sql/pom.xml -DskipTests package
       - name: Build rt analytics
-        run: mvn -q -f crossbring-jobs-rt-analytics/pom.xml -DskipTests package
+        run: mvn -q -f crossbring/crossbring-jobs-rt-analytics/pom.xml -DskipTests package
   validate-contracts:
     runs-on: ubuntu-latest
     steps:
@@ -23,7 +23,7 @@ jobs:
         with:
           python-version: '3.x'
       - run: pip install pyyaml
-      - run: python crossbring-jobs-governance-contracts/scripts/validate.py
+      - run: python crossbring/crossbring-jobs-governance-contracts/scripts/validate.py
   python-install:
     runs-on: ubuntu-latest
     steps:
@@ -31,5 +31,5 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.x'
-      - run: pip install -r crossbring-jobs-batch-extractor/requirements.txt
+      - run: pip install -r crossbring/crossbring-jobs-batch-extractor/requirements.txt
 

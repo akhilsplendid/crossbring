@@ -1,5 +1,5 @@
 $ErrorActionPreference = 'Stop'
-$envPath = Resolve-Path (Join-Path $PSScriptRoot "../../crossbring-jobmodel/.env") -ErrorAction SilentlyContinue
+$envPath = Resolve-Path (Join-Path $PSScriptRoot "../crossbring-jobmodel/.env") -ErrorAction SilentlyContinue
 $dsn = ''
 if($envPath){
   $line = Get-Content $envPath | Where-Object { $_ -match '^JOBMODEL_DSN=' } | Select-Object -First 1
@@ -24,4 +24,3 @@ stringData:
   dsn: |
     $dsn
 "@
-

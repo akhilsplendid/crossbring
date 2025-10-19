@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crossbring-connect
+  name: crossbring-apps
 spec:
   destination:
     namespace: data
@@ -10,8 +10,9 @@ spec:
   source:
     repoURL: https://github.com/akhilsplendid/crossbring
     targetRevision: HEAD
-    path: crossbring-kafka-gitops-blueprints/manifests/connect
+    path: crossbring/crossbring-kafka-gitops-blueprints/manifests/apps
   syncPolicy:
     automated:
       prune: true
       selfHeal: true
+

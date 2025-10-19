@@ -4,8 +4,8 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'crossbring-jobs-transformer-java-sql/**'
-      - 'crossbring-jobs-rt-analytics/**'
+      - 'crossbring/crossbring-jobs-transformer-java-sql/**'
+      - 'crossbring/crossbring-jobs-rt-analytics/**'
       - '.github/workflows/build-java-images.yml'
   workflow_dispatch:
 
@@ -23,9 +23,9 @@ jobs:
       matrix:
         include:
           - name: jobs-transformer
-            context: crossbring-jobs-transformer-java-sql
+            context: crossbring/crossbring-jobs-transformer-java-sql
           - name: jobs-rt-analytics
-            context: crossbring-jobs-rt-analytics
+            context: crossbring/crossbring-jobs-rt-analytics
     steps:
       - name: Checkout
         uses: actions/checkout@v4

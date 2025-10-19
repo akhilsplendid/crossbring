@@ -12,7 +12,7 @@ if(-not (Test-Path $secrets)){
 }
 
 # Provide JOBMODEL_DSN to compose via .env
-$jobmodelEnv = Resolve-Path (Join-Path $PSScriptRoot "../../crossbring-jobmodel/.env") -ErrorAction SilentlyContinue
+$jobmodelEnv = Resolve-Path (Join-Path $PSScriptRoot "../crossbring-jobmodel/.env") -ErrorAction SilentlyContinue
 if($jobmodelEnv){
   $dsn = (Get-Content $jobmodelEnv | Where-Object { $_ -match '^JOBMODEL_DSN=' } | ForEach-Object { ($_ -split '=',2)[1] })
   if($dsn){

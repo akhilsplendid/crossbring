@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: crossbring-apps
+  name: crossbring-apps-helm
 spec:
   destination:
     namespace: data
@@ -10,7 +10,11 @@ spec:
   source:
     repoURL: https://github.com/akhilsplendid/crossbring
     targetRevision: HEAD
-    path: crossbring-kafka-gitops-blueprints/manifests/apps
+    path: crossbring/crossbring-kafka-gitops-blueprints/helm/apps
+    helm:
+      values: |
+        imagePullSecrets:
+          - name: ghcr-pull-secret
   syncPolicy:
     automated:
       prune: true
