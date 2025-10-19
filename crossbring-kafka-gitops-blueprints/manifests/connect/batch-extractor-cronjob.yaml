@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: jobs-batch-extractor
+  namespace: data
+spec:
+  schedule: "*/15 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: extractor
+              image: ghcr.io/akhilsplendid/crossbring/jobs-batch-extractor:latest
+              env:
+                - name: JOBMODEL_DSN
+                  valueFrom:
+                    secretKeyRef:
+                      name: supabase-secrets
+                      key: dsn
+                - name: MODE
+                  value: "direct"
+          volumes: []

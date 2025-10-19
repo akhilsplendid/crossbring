@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: register-connectors
+  namespace: data
+spec:
+  template:
+    spec:
+      restartPolicy: OnFailure
+      containers:
+        - name: curl
+          image: curlimages/curl:8.10.1
+          command:
+            - sh
+            - -ceu
+            - |
+              set -o pipefail
+              echo "Waiting for connect-sink and debezium-source..."
+              for i in $(seq 1 120); do
+                curl -sSf http://connect-sink:8083/connectors && curl -sSf http://debezium-source:8084/connectors && break || true
+                sleep 2
+              done
+              echo "Posting JDBC sink"
+              curl -sS -X POST -H 'Content-Type: application/json' --data @/configs/jdbc-sink-stg-jobs.json http://connect-sink:8083/connectors | tee /dev/stderr
+              echo "Posting Debezium source"
+              curl -sS -X POST -H 'Content-Type: application/json' --data @/configs/supabase-jobs.json http://debezium-source:8084/connectors | tee /dev/stderr
+          volumeMounts:
+            - name: connectors
+              mountPath: /configs
+      volumes:
+        - name: connectors
+          configMap:
+            name: connectors-config
+

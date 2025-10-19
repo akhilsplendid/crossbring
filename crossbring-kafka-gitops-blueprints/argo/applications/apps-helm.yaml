@@ -1,0 +1,22 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crossbring-apps-helm
+spec:
+  destination:
+    namespace: data
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://github.com/akhilsplendid/crossbring
+    targetRevision: HEAD
+    path: crossbring/crossbring-kafka-gitops-blueprints/helm/apps
+    helm:
+      values: |
+        imagePullSecrets:
+          - name: ghcr-pull-secret
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+

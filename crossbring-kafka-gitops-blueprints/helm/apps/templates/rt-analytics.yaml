@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-rt-analytics
+  namespace: data
+  labels:
+    app: jobs-rt-analytics
+    {{- include "apps.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: jobs-rt-analytics }
+  template:
+    metadata:
+      labels: { app: jobs-rt-analytics }
+    spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: app
+          image: {{ .Values.rtAnalytics.image | quote }}
+          env:
+            - name: BOOTSTRAP_SERVERS
+              value: {{ .Values.rtAnalytics.env.BOOTSTRAP_SERVERS | quote }}
+            - name: TOPIC_IN
+              value: {{ .Values.rtAnalytics.env.TOPIC_IN | quote }}
+          resources:
+            {{- toYaml .Values.rtAnalytics.resources | nindent 12 }}
+          readinessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 40
+            periodSeconds: 20
+

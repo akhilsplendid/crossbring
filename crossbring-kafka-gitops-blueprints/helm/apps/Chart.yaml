@@ -1,0 +1,7 @@
+apiVersion: v2
+name: crossbring-apps
+description: Crossbring apps (transformer, rt-analytics, batch-extractor cron) for K8s
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+

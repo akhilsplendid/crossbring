@@ -1,0 +1,9 @@
+replicaCount: 3
+listeners:
+  - name: internal
+security:
+  tls: false
+zookeeper:
+  enabled: true
+resources: {}
+

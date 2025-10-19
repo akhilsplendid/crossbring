@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-transformer
+  namespace: data
+  labels:
+    app: jobs-transformer
+    {{- include "apps.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: jobs-transformer }
+  template:
+    metadata:
+      labels: { app: jobs-transformer }
+    spec:
+      {{- if .Values.imagePullSecrets }}
+      imagePullSecrets:
+      {{- toYaml .Values.imagePullSecrets | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: app
+          image: {{ .Values.transformer.image | quote }}
+          env:
+            - name: BOOTSTRAP_SERVERS
+              value: {{ .Values.transformer.env.BOOTSTRAP_SERVERS | quote }}
+            - name: TOPIC_JOBS
+              value: {{ .Values.transformer.env.TOPIC_JOBS | quote }}
+            - name: TOPIC_JOB_DETAILS
+              value: {{ .Values.transformer.env.TOPIC_JOB_DETAILS | quote }}
+            - name: TOPIC_OUT
+              value: {{ .Values.transformer.env.TOPIC_OUT | quote }}
+          resources:
+            {{- toYaml .Values.transformer.resources | nindent 12 }}
+          readinessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 40
+            periodSeconds: 20
+

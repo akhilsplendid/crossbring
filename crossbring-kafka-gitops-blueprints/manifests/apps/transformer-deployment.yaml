@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-transformer
+  namespace: data
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: jobs-transformer }
+  template:
+    metadata:
+      labels: { app: jobs-transformer }
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/akhilsplendid/crossbring/jobs-transformer:latest
+          env:
+            - { name: BOOTSTRAP_SERVERS, value: crossbring-kafka:9092 }
+            - { name: TOPIC_JOBS, value: supabase.public.jobs }
+            - { name: TOPIC_JOB_DETAILS, value: supabase.public.job_details }
+            - { name: TOPIC_OUT, value: jobmodel.stg_jobs }
+          readinessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 40
+            periodSeconds: 20
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }
+      imagePullSecrets:
+        - name: ghcr-pull-secret

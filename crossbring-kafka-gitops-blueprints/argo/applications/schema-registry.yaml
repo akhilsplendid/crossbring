@@ -1,0 +1,21 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: crossbring-schema-registry
+spec:
+  destination:
+    namespace: data
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    repoURL: https://charts.bitnami.com/bitnami
+    chart: schema-registry
+    targetRevision: "*"
+    helm:
+      values: |
+        kafka.bootstrapServers: crossbring-kafka:9092
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: jobs-rt-analytics
+  namespace: data
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: jobs-rt-analytics }
+  template:
+    metadata:
+      labels: { app: jobs-rt-analytics }
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/akhilsplendid/crossbring/jobs-rt-analytics:latest
+          env:
+            - { name: BOOTSTRAP_SERVERS, value: crossbring-kafka:9092 }
+            - { name: TOPIC_IN, value: jobmodel.stg_jobs }
+          readinessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 20
+            periodSeconds: 10
+          livenessProbe:
+            exec:
+              command: ["/bin/sh","-c","pgrep -f app.jar >/dev/null"]
+            initialDelaySeconds: 40
+            periodSeconds: 20
+          resources:
+            requests: { cpu: "100m", memory: "256Mi" }
+            limits: { cpu: "500m", memory: "512Mi" }
+      imagePullSecrets:
+        - name: ghcr-pull-secret

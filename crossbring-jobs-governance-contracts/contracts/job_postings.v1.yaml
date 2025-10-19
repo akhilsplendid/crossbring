@@ -1,0 +1,18 @@
+name: job_postings
+version: 1
+owner: crossbring/data
+sla:
+  freshness_minutes: 30
+  availability_pct: 99.5
+schema:
+  type: record
+  fields:
+    - {name: job_id, type: string}
+    - {name: title, type: string}
+    - {name: employer_name, type: string}
+    - {name: city, type: string}
+    - {name: region, type: string}
+    - {name: country_code, type: string}
+    - {name: language, type: string}
+    - {name: tech_tags, type: array, items: string}
+

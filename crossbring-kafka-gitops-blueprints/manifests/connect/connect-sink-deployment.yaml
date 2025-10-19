@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: connect-sink
+  namespace: data
+spec:
+  replicas: 1
+  selector:
+    matchLabels: { app: connect-sink }
+  template:
+    metadata:
+      labels: { app: connect-sink }
+    spec:
+      containers:
+        - name: connect
+          image: confluentinc/cp-kafka-connect:7.6.1
+          ports: [{ containerPort: 8083 }]
+          env:
+            - { name: CONNECT_BOOTSTRAP_SERVERS, value: crossbring-kafka:9092 }
+            - { name: CONNECT_REST_ADVERTISED_HOST_NAME, value: connect-sink }
+            - { name: CONNECT_GROUP_ID, value: connect-sink }
+            - { name: CONNECT_CONFIG_STORAGE_TOPIC, value: _connect-configs }
+            - { name: CONNECT_OFFSET_STORAGE_TOPIC, value: _connect-offsets }
+            - { name: CONNECT_STATUS_STORAGE_TOPIC, value: _connect-status }
+            - { name: CONNECT_KEY_CONVERTER, value: org.apache.kafka.connect.storage.StringConverter }
+            - { name: CONNECT_VALUE_CONVERTER, value: org.apache.kafka.connect.json.JsonConverter }
+            - { name: CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE, value: "false" }
+            - { name: CONNECT_PLUGIN_PATH, value: /usr/share/java }
+          volumeMounts:
+            - name: secrets
+              mountPath: /etc/connect-secrets
+              readOnly: true
+          readinessProbe:
+            httpGet: { path: /connectors, port: 8083 }
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          livenessProbe:
+            httpGet: { path: /connectors, port: 8083 }
+            initialDelaySeconds: 30
+            periodSeconds: 20
+          resources:
+            requests: { cpu: "200m", memory: "512Mi" }
+            limits: { cpu: "1", memory: "1Gi" }
+      volumes:
+        - name: secrets
+          secret:
+            secretName: supabase-secrets
+      imagePullSecrets:
+        - name: ghcr-pull-secret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: connect-sink
+  namespace: data
+spec:
+  selector: { app: connect-sink }
+  ports:
+    - name: http
+      port: 8083
+      targetPort: 8083
