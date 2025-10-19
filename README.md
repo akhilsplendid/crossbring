@@ -45,6 +45,12 @@ Crossbring is a portfolio-ready, production-style data platform. It demonstrates
 - `docker pull ghcr.io/akhilsplendid/crossbring/jobs-rt-analytics:latest`
 - `docker pull ghcr.io/akhilsplendid/crossbring/jobs-batch-extractor:latest`
 
+Private packages note
+- If these GHCR packages are private, you must be logged into GitHub to view package pages and authenticate Docker before pulling images:
+  - `echo <YOUR_GITHUB_PAT> | docker login ghcr.io -u akhilsplendid --password-stdin`
+  - The token needs the `read:packages` scope (and `write:packages` if you plan to push).
+  - To make packages public, open each package page → Package settings → Change visibility → Public.
+
 ## Notes
 - Supabase logical replication may be restricted; the CronJob fallback (`jobs-batch-extractor`) keeps `jobmodel.stg_jobs` up-to-date.
 
