@@ -1,16 +1,24 @@
-﻿# Crossbring — Data Platform (Swedish Jobs)
+# Crossbring - Data Platform (Swedish Jobs)
 
-Crossbring is a portfolio‑ready, production‑style data platform aligned to the Tryg360 Data Engineer role. It demonstrates SQL data modeling, Java ETL, CDC with event streams, governance, and GitOps deployment.
+[![CI](https://github.com/akhilsplendid/crossbring/actions/workflows/ci.yml/badge.svg)](https://github.com/akhilsplendid/crossbring/actions/workflows/ci.yml)
+[![Build Java Images](https://github.com/akhilsplendid/crossbring/actions/workflows/build-java-images.yml/badge.svg)](https://github.com/akhilsplendid/crossbring/actions/workflows/build-java-images.yml)
+[![Build Batch Extractor](https://github.com/akhilsplendid/crossbring/actions/workflows/build-batch-extractor.yml/badge.svg)](https://github.com/akhilsplendid/crossbring/actions/workflows/build-batch-extractor.yml)
+
+[![jobs-transformer](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--transformer-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/crossbring%2Fjobs-transformer)
+[![jobs-rt-analytics](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--rt--analytics-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/crossbring%2Fjobs-rt-analytics)
+[![jobs-batch-extractor](https://img.shields.io/badge/ghcr.io%2Fakhilsplendid%2Fcrossbring%2Fjobs--batch--extractor-latest-blue?logo=github)](https://github.com/users/akhilsplendid/packages/container/crossbring%2Fjobs-batch-extractor)
+
+Crossbring is a portfolio-ready, production-style data platform aligned to the Tryg360 Data Engineer role. It demonstrates SQL data modeling, Java ETL, CDC with event streams, governance, and GitOps deployment.
 
 ## Projects
-- crossbring-jobmodel — PostgreSQL JobModel (dims + SCD facts) and views
-- crossbring-jobs-cdc-debezium — Local Kafka + Schema Registry + Kafka Connect + Debezium; source/sink connectors and scripts
-- crossbring-jobs-transformer-java-sql — Kafka Streams join/normalize CDC into JobModel staging (idempotent upserts)
-- crossbring-jobs-rt-analytics — Streaming KPIs (e.g., postings per region/day)
-- crossbring-jobs-governance-contracts — Git‑backed data contracts with CI lint
-- crossbring-jobs-marketplace — Trino catalog for curated JobModel datasets
-- crossbring-kafka-gitops-blueprints — ArgoCD apps, manifests, and Helm chart for GitOps
-- crossbring-jobs-batch-extractor — Batch fallback when CDC is restricted (pull→upsert or publish→Kafka)
+- crossbring-jobmodel - PostgreSQL JobModel (dims + SCD facts) and views
+- crossbring-jobs-cdc-debezium - Local Kafka + Schema Registry + Kafka Connect + Debezium; source/sink connectors and scripts
+- crossbring-jobs-transformer-java-sql - Kafka Streams join/normalize CDC into JobModel staging (idempotent upserts)
+- crossbring-jobs-rt-analytics - Streaming KPIs (e.g., postings per region/day)
+- crossbring-jobs-governance-contracts - Git-backed data contracts with CI lint
+- crossbring-jobs-marketplace - Trino catalog for curated JobModel datasets
+- crossbring-kafka-gitops-blueprints - ArgoCD apps, manifests, and Helm chart for GitOps
+- crossbring-jobs-batch-extractor - Batch fallback when CDC is restricted (pull->upsert or publish->Kafka)
 
 ## Quickstart (Local)
 1) Apply JobModel
@@ -32,6 +40,10 @@ Crossbring is a portfolio‑ready, production‑style data platform aligned to t
 ## CI/CD
 - GitHub Actions: builds images for transformer, RT analytics, and batch extractor; validates contracts and Argo paths.
 
+### Images (GHCR)
+- `docker pull ghcr.io/akhilsplendid/crossbring/jobs-transformer:latest`
+- `docker pull ghcr.io/akhilsplendid/crossbring/jobs-rt-analytics:latest`
+- `docker pull ghcr.io/akhilsplendid/crossbring/jobs-batch-extractor:latest`
+
 ## Notes
-- Supabase logical replication may be restricted; the CronJob fallback (`jobs-batch-extractor`) keeps `jobmodel.stg_jobs` up‑to‑date.
-- Images are published to GHCR under `ghcr.io/akhilsplendid/crossbring/*`.
+- Supabase logical replication may be restricted; the CronJob fallback (`jobs-batch-extractor`) keeps `jobmodel.stg_jobs` up-to-date.
