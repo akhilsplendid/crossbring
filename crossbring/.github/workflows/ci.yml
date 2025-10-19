@@ -1,0 +1,36 @@
+name: CI
+on:
+  push:
+  pull_request:
+jobs:
+  build-java:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Build transformer
+        run: mvn -q -f crossbring-jobs-transformer-java-sql/pom.xml -DskipTests package
+      - name: Build rt analytics
+        run: mvn -q -f crossbring-jobs-rt-analytics/pom.xml -DskipTests package
+  validate-contracts:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: pip install pyyaml
+      - run: python crossbring-jobs-governance-contracts/scripts/validate.py
+  validate-argo-paths:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: pip install pyyaml
+      - run: python scripts/validate_argo_paths.py
+
