@@ -1,0 +1,8 @@
+image:
+  repository: your-registry/citizen-portal
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  port: 80
+  targetPort: 80
+replicaCount: 1

@@ -1,0 +1,11 @@
+image:
+  repository: your-registry/caseservice
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  port: 80
+  targetPort: 8081
+replicaCount: 1
+monitoring:
+  enabled: false
+  interval: 30s

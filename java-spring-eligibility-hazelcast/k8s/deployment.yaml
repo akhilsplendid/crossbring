@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eligibility
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eligibility
+  template:
+    metadata:
+      labels:
+        app: eligibility
+    spec:
+      containers:
+        - name: eligibility
+          image: your-registry/eligibility:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8083
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: eligibility
+spec:
+  selector:
+    app: eligibility
+  ports:
+    - port: 80
+      targetPort: 8083

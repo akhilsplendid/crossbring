@@ -1,0 +1,43 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: citizen-portal
+spec:
+  to:
+    kind: Service
+    name: citizen-portal
+  port:
+    targetPort: 80
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: caseservice
+spec:
+  to:
+    kind: Service
+    name: caseservice
+  port:
+    targetPort: 80
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: paymentservice
+spec:
+  to:
+    kind: Service
+    name: paymentservice
+  port:
+    targetPort: 80
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: eligibility
+spec:
+  to:
+    kind: Service
+    name: eligibility
+  port:
+    targetPort: 80

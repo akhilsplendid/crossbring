@@ -1,0 +1,23 @@
+caseservice:
+  image:
+    repository: your-registry/caseservice
+    tag: latest
+paymentservice:
+  image:
+    repository: your-registry/paymentservice
+    tag: latest
+  artemis:
+    host: artemis
+    port: 61616
+eligibility:
+  image:
+    repository: your-registry/eligibility
+    tag: latest
+citizen-portal:
+  image:
+    repository: your-registry/citizen-portal
+    tag: latest
+global:
+  monitoring:
+    enabled: false
+    interval: 30s

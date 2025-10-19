@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: caseservice
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://your.git.repo/your-projects.git
+    targetRevision: main
+    path: java-spring-caseservice/helm/caseservice
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: cases
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

@@ -1,0 +1,18 @@
+apiVersion: v2
+name: social-benefit-platform
+description: Umbrella chart deploying services and frontend
+type: application
+version: 0.1.0
+dependencies:
+  - name: caseservice
+    version: 0.1.0
+    repository: "file://../../java-spring-caseservice/helm/caseservice"
+  - name: paymentservice
+    version: 0.1.0
+    repository: "file://../../java-spring-paymentservice-messaging/helm/paymentservice"
+  - name: eligibility
+    version: 0.1.0
+    repository: "file://../../java-spring-eligibility-hazelcast/helm/eligibility"
+  - name: citizen-portal
+    version: 0.1.0
+    repository: "file://../../vue-citizen-portal/helm/citizen-portal"

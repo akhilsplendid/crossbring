@@ -1,0 +1,9 @@
+services:
+  artemis:
+    image: vromero/activemq-artemis:2.31.2
+    environment:
+      - ARTEMIS_USERNAME=artemis
+      - ARTEMIS_PASSWORD=artemis
+    ports:
+      - "61616:61616"   # JMS
+      - "8161:8161"     # Web console

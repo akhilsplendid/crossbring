@@ -1,0 +1,25 @@
+# Global ignores
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.iml
+
+# Node
+node_modules/
+dist/
+
+# Gradle/Java
+.gradle/
+**/build/
+*.class
+*.log
+*.jar
+*.war
+*.ear
+
+# Others
+.classpath
+.project
+.settings/
+.env

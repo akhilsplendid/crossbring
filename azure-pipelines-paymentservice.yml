@@ -1,0 +1,86 @@
+trigger:
+  paths:
+    include:
+      - java-spring-paymentservice-messaging/*
+
+variables:
+  imageName: paymentservice
+  containerRegistry: $(ACR)
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Test_Build
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: Bash@3
+            displayName: Run tests (with Testcontainers)
+            inputs:
+              targetType: inline
+              script: |
+                docker run --rm \
+                  -v $(System.DefaultWorkingDirectory)/java-spring-paymentservice-messaging:/app -w /app \
+                  -v /var/run/docker.sock:/var/run/docker.sock \
+                  -e DOCKER_HOST=unix:///var/run/docker.sock \
+                  gradle:8.10.2-jdk21-alpine sh -lc "gradle test --no-daemon"
+          - task: Docker@2
+            displayName: Build and push
+            inputs:
+              command: buildAndPush
+              repository: $(imageName)
+              dockerfile: java-spring-paymentservice-messaging/Dockerfile
+              containerRegistry: $(dockerRegistryServiceConnection)
+              tags: |
+                $(Build.SourceVersion)
+                latest
+  - stage: Deploy_Dev
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: Deploy
+        environment: dev
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: HelmInstaller@1
+                  inputs:
+                    helmVersionToInstall: '3.14.4'
+                - task: HelmDeploy@0
+                  inputs:
+                    connectionType: 'Kubernetes Service Connection'
+                    kubernetesServiceConnection: $(k8sServiceConnectionDev)
+                    namespace: $(namespaceDev)
+                    command: 'upgrade'
+                    chartType: FilePath
+                    chartPath: java-spring-paymentservice-messaging/helm/paymentservice
+                    releaseName: paymentservice
+                    install: true
+                    arguments: |
+                      --set image.repository=$(containerRegistry)/$(imageName) \
+                      --set image.tag=$(Build.SourceVersion)
+  - stage: Deploy_Prod
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+    jobs:
+      - deployment: Deploy
+        environment: prod
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: HelmInstaller@1
+                  inputs:
+                    helmVersionToInstall: '3.14.4'
+                - task: HelmDeploy@0
+                  inputs:
+                    connectionType: 'Kubernetes Service Connection'
+                    kubernetesServiceConnection: $(k8sServiceConnectionProd)
+                    namespace: $(namespaceProd)
+                    command: 'upgrade'
+                    chartType: FilePath
+                    chartPath: java-spring-paymentservice-messaging/helm/paymentservice
+                    releaseName: paymentservice
+                    install: true
+                    arguments: |
+                      --set image.repository=$(containerRegistry)/$(imageName) \
+                      --set image.tag=$(Build.SourceVersion)

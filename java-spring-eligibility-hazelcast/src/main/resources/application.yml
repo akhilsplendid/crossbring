@@ -1,0 +1,22 @@
+server:
+  port: 8083
+spring:
+  application:
+    name: eligibility
+  cache:
+    type: hazelcast
+hazelcast:
+  config: classpath:hazelcast.yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      probes:
+        enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true

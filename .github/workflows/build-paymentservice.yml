@@ -1,0 +1,96 @@
+name: build-paymentservice
+on:
+  push:
+    paths:
+      - 'java-spring-paymentservice-messaging/**'
+  pull_request:
+    paths:
+      - 'java-spring-paymentservice-messaging/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: paymentservice
+      IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run tests with Gradle in container
+        working-directory: java-spring-paymentservice-messaging
+        run: |
+          docker run --rm \
+            -v $PWD:/app -w /app \
+            -v /var/run/docker.sock:/var/run/docker.sock \
+            --network host \
+            -e DOCKER_HOST=unix:///var/run/docker.sock \
+            gradle:8.10.2-jdk21-alpine sh -lc "gradle test --no-daemon"
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: |
+            ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=raw,value=latest,enable={{is_default_branch}}
+      - name: Login to GHCR
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: java-spring-paymentservice-messaging
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+  deploy-dev:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' && secrets.KUBE_CONFIG_BASE64_DEV != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+      - name: Setup kubectl
+        run: |
+          echo "${KUBE_CONFIG_BASE64_DEV}" | base64 -d > $HOME/.kubeconfig
+          echo "KUBECONFIG=$HOME/.kubeconfig" >> $GITHUB_ENV
+        env:
+          KUBE_CONFIG_BASE64_DEV: ${{ secrets.KUBE_CONFIG_BASE64_DEV }}
+      - name: Deploy to dev with Helm
+        run: |
+          helm upgrade --install paymentservice ./java-spring-paymentservice-messaging/helm/paymentservice \
+            -n ${NAMESPACE_DEV} --create-namespace \
+            --set image.repository=${IMAGE_REGISTRY}/${IMAGE_NAME} \
+            --set image.tag=${GITHUB_SHA}
+        env:
+          IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+          IMAGE_NAME: paymentservice
+          GITHUB_SHA: ${{ github.sha }}
+          NAMESPACE_DEV: ${{ secrets.NAMESPACE_DEV }}
+  deploy-prod:
+    needs: build
+    runs-on: ubuntu-latest
+    if: ${{ startsWith(github.ref, 'refs/tags/v') && secrets.KUBE_CONFIG_BASE64_PROD != '' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: azure/setup-helm@v4
+      - name: Setup kubectl
+        run: |
+          echo "${KUBE_CONFIG_BASE64_PROD}" | base64 -d > $HOME/.kubeconfig
+          echo "KUBECONFIG=$HOME/.kubeconfig" >> $GITHUB_ENV
+        env:
+          KUBE_CONFIG_BASE64_PROD: ${{ secrets.KUBE_CONFIG_BASE64_PROD }}
+      - name: Deploy to prod with Helm
+        run: |
+          helm upgrade --install paymentservice ./java-spring-paymentservice-messaging/helm/paymentservice \
+            -n ${NAMESPACE_PROD} --create-namespace \
+            --set image.repository=${IMAGE_REGISTRY}/${IMAGE_NAME} \
+            --set image.tag=${IMAGE_TAG}
+        env:
+          IMAGE_REGISTRY: ghcr.io/${{ github.repository_owner }}
+          IMAGE_NAME: paymentservice
+          IMAGE_TAG: ${{ github.ref_name }}
+          NAMESPACE_PROD: ${{ secrets.NAMESPACE_PROD }}

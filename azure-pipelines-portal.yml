@@ -1,0 +1,76 @@
+trigger:
+  paths:
+    include:
+      - vue-citizen-portal/*
+
+variables:
+  imageName: citizen-portal
+  containerRegistry: $(ACR)
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - task: Docker@2
+            displayName: Build and push
+            inputs:
+              command: buildAndPush
+              repository: $(imageName)
+              dockerfile: vue-citizen-portal/Dockerfile
+              containerRegistry: $(dockerRegistryServiceConnection)
+              tags: |
+                $(Build.SourceVersion)
+                latest
+  - stage: Deploy_Dev
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: Deploy
+        environment: dev
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: HelmInstaller@1
+                  inputs:
+                    helmVersionToInstall: '3.14.4'
+                - task: HelmDeploy@0
+                  inputs:
+                    connectionType: 'Kubernetes Service Connection'
+                    kubernetesServiceConnection: $(k8sServiceConnectionDev)
+                    namespace: $(namespaceDev)
+                    command: 'upgrade'
+                    chartType: FilePath
+                    chartPath: vue-citizen-portal/helm/citizen-portal
+                    releaseName: citizen-portal
+                    install: true
+                    arguments: |
+                      --set image.repository=$(containerRegistry)/$(imageName) \
+                      --set image.tag=$(Build.SourceVersion)
+  - stage: Deploy_Prod
+    condition: and(succeeded(), startsWith(variables['Build.SourceBranch'], 'refs/tags/v'))
+    jobs:
+      - deployment: Deploy
+        environment: prod
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - task: HelmInstaller@1
+                  inputs:
+                    helmVersionToInstall: '3.14.4'
+                - task: HelmDeploy@0
+                  inputs:
+                    connectionType: 'Kubernetes Service Connection'
+                    kubernetesServiceConnection: $(k8sServiceConnectionProd)
+                    namespace: $(namespaceProd)
+                    command: 'upgrade'
+                    chartType: FilePath
+                    chartPath: vue-citizen-portal/helm/citizen-portal
+                    releaseName: citizen-portal
+                    install: true
+                    arguments: |
+                      --set image.repository=$(containerRegistry)/$(imageName) \
+                      --set image.tag=$(Build.SourceVersion)

@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: citizen-portal
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: citizen-portal
+  template:
+    metadata:
+      labels:
+        app: citizen-portal
+    spec:
+      containers:
+        - name: citizen-portal
+          image: your-registry/citizen-portal:latest
+          ports:
+            - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: citizen-portal
+spec:
+  selector:
+    app: citizen-portal
+  ports:
+    - port: 80
+      targetPort: 80

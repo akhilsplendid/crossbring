@@ -1,0 +1,87 @@
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: caseservice
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: caseservice
+spec:
+  source:
+    git:
+      uri: https://your.git.repo/your-projects.git
+      ref: main
+    contextDir: java-spring-caseservice
+  strategy:
+    dockerStrategy: {}
+  output:
+    to:
+      kind: ImageStreamTag
+      name: caseservice:latest
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: paymentservice
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: paymentservice
+spec:
+  source:
+    git:
+      uri: https://your.git.repo/your-projects.git
+      ref: main
+    contextDir: java-spring-paymentservice-messaging
+  strategy:
+    dockerStrategy: {}
+  output:
+    to:
+      kind: ImageStreamTag
+      name: paymentservice:latest
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: eligibility
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: eligibility
+spec:
+  source:
+    git:
+      uri: https://your.git.repo/your-projects.git
+      ref: main
+    contextDir: java-spring-eligibility-hazelcast
+  strategy:
+    dockerStrategy: {}
+  output:
+    to:
+      kind: ImageStreamTag
+      name: eligibility:latest
+---
+apiVersion: image.openshift.io/v1
+kind: ImageStream
+metadata:
+  name: citizen-portal
+---
+apiVersion: build.openshift.io/v1
+kind: BuildConfig
+metadata:
+  name: citizen-portal
+spec:
+  source:
+    git:
+      uri: https://your.git.repo/your-projects.git
+      ref: main
+    contextDir: vue-citizen-portal
+  strategy:
+    dockerStrategy: {}
+  output:
+    to:
+      kind: ImageStreamTag
+      name: citizen-portal:latest

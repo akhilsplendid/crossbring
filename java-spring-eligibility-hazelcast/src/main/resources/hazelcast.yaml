@@ -1,0 +1,11 @@
+hazelcast:
+  instance-name: eligibility-hz
+  network:
+    join:
+      multicast:
+        enabled: false
+      kubernetes:
+        enabled: false
+  map:
+    eligibility:
+      time-to-live-seconds: 60

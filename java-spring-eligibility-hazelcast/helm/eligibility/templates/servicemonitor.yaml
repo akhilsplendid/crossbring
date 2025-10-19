@@ -1,0 +1,18 @@
+{{- $enabled := (default .Values.global.monitoring.enabled .Values.monitoring.enabled) }}
+{{- $interval := (default .Values.global.monitoring.interval .Values.monitoring.interval) }}
+{{- if $enabled }}
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "eligibility.fullname" . }}
+  labels:
+    release: prometheus-operator
+spec:
+  selector:
+    matchLabels:
+      app: {{ include "eligibility.name" . }}
+  endpoints:
+    - path: /actuator/prometheus
+      port: http
+      interval: {{ $interval }}
+{{- end }}

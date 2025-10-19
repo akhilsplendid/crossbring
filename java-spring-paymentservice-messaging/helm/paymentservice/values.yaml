@@ -1,0 +1,14 @@
+image:
+  repository: your-registry/paymentservice
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  port: 80
+  targetPort: 8082
+replicaCount: 1
+artemis:
+  host: artemis
+  port: 61616
+monitoring:
+  enabled: false
+  interval: 30s

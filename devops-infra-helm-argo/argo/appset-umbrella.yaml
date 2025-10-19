@@ -1,0 +1,46 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: social-benefit-platform
+  namespace: argocd
+spec:
+  generators:
+    - list:
+        elements:
+          - name: dev
+            namespace: social-dev
+            monitoringEnabled: "false"
+          - name: prod
+            namespace: social-prod
+            monitoringEnabled: "true"
+  template:
+    metadata:
+      name: social-benefit-platform-{{name}}
+      annotations:
+        argocd-image-updater.argoproj.io/image-list: |
+          caseservice=ghcr.io/your-org/caseservice:semver:~,
+          paymentservice=ghcr.io/your-org/paymentservice:semver:~,
+          eligibility=ghcr.io/your-org/eligibility:semver:~,
+          citizen-portal=ghcr.io/your-org/citizen-portal:semver:~
+        argocd-image-updater.argoproj.io/write-back-method: argocd
+        argocd-image-updater.argoproj.io/helm.image-values.caseservice: caseservice.image.tag
+        argocd-image-updater.argoproj.io/helm.image-values.paymentservice: paymentservice.image.tag
+        argocd-image-updater.argoproj.io/helm.image-values.eligibility: eligibility.image.tag
+        argocd-image-updater.argoproj.io/helm.image-values.citizen-portal: citizen-portal.image.tag
+    spec:
+      project: default
+      source:
+        repoURL: https://your.git.repo/your-projects.git
+        targetRevision: main
+        path: devops-infra-helm-argo/helm/umbrella
+        helm:
+          parameters:
+            - name: global.monitoring.enabled
+              value: '{{monitoringEnabled}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: '{{namespace}}'
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
