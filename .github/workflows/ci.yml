@@ -24,6 +24,15 @@ jobs:
           python-version: '3.x'
       - run: pip install pyyaml
       - run: python crossbring/crossbring-jobs-governance-contracts/scripts/validate.py
+  validate-argo-paths:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - run: pip install pyyaml
+      - run: python scripts/validate_argo_paths.py
   python-install:
     runs-on: ubuntu-latest
     steps:
