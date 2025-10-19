@@ -49,16 +49,17 @@ jobs:
   deploy-dev:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ github.ref == 'refs/heads/main' && secrets.KUBE_CONFIG_BASE64_DEV != '' }}
+    if: ${{ github.ref == 'refs/heads/main' && secrets.KUBE_CONFIG_BASE64_DEV != '' && secrets.NAMESPACE_DEV != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: azure/setup-helm@v4
-      - name: Setup kubectl
-        run: |
-          echo "${KUBE_CONFIG_BASE64_DEV}" | base64 -d > $HOME/.kubeconfig
-          echo "KUBECONFIG=$HOME/.kubeconfig" >> $GITHUB_ENV
+      - name: Setup kubeconfig
         env:
           KUBE_CONFIG_BASE64_DEV: ${{ secrets.KUBE_CONFIG_BASE64_DEV }}
+        run: |
+          KUBECFG="$RUNNER_TEMP/kubeconfig"
+          echo "$KUBE_CONFIG_BASE64_DEV" | base64 -d > "$KUBECFG"
+          echo "KUBECONFIG=$KUBECFG" >> $GITHUB_ENV
       - name: Deploy to dev with Helm
         run: |
           helm upgrade --install paymentservice ./java-spring-paymentservice-messaging/helm/paymentservice \
@@ -73,16 +74,17 @@ jobs:
   deploy-prod:
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ startsWith(github.ref, 'refs/tags/v') && secrets.KUBE_CONFIG_BASE64_PROD != '' }}
+    if: ${{ startsWith(github.ref, 'refs/tags/v') && secrets.KUBE_CONFIG_BASE64_PROD != '' && secrets.NAMESPACE_PROD != '' }}
     steps:
       - uses: actions/checkout@v4
       - uses: azure/setup-helm@v4
-      - name: Setup kubectl
-        run: |
-          echo "${KUBE_CONFIG_BASE64_PROD}" | base64 -d > $HOME/.kubeconfig
-          echo "KUBECONFIG=$HOME/.kubeconfig" >> $GITHUB_ENV
+      - name: Setup kubeconfig
         env:
           KUBE_CONFIG_BASE64_PROD: ${{ secrets.KUBE_CONFIG_BASE64_PROD }}
+        run: |
+          KUBECFG="$RUNNER_TEMP/kubeconfig"
+          echo "$KUBE_CONFIG_BASE64_PROD" | base64 -d > "$KUBECFG"
+          echo "KUBECONFIG=$KUBECFG" >> $GITHUB_ENV
       - name: Deploy to prod with Helm
         run: |
           helm upgrade --install paymentservice ./java-spring-paymentservice-messaging/helm/paymentservice \

@@ -29,6 +29,16 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: azure/setup-helm@v4
+      - name: Check required secrets
+        env:
+          KUBE_CONFIG_BASE64: ${{ secrets.KUBE_CONFIG_BASE64 }}
+          NAMESPACE: ${{ secrets.NAMESPACE }}
+        run: |
+          if [ -z "$KUBE_CONFIG_BASE64" ] || [ -z "$NAMESPACE" ]; then
+            echo "Required secrets not set (KUBE_CONFIG_BASE64, NAMESPACE). Skipping deploy.";
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+            exit 0
+          fi
       - name: Derive image tag
         id: tag
         run: |
@@ -39,13 +49,16 @@ jobs:
           else
             echo "tag=${GITHUB_SHA}" >> $GITHUB_OUTPUT
           fi
-      - name: Setup kubectl from env secrets
-        run: |
-          echo "${KUBE_CONFIG_BASE64}" | base64 -d > $HOME/.kubeconfig
-          echo "KUBECONFIG=$HOME/.kubeconfig" >> $GITHUB_ENV
+      - name: Setup kubeconfig
+        if: ${{ success() }}
         env:
           KUBE_CONFIG_BASE64: ${{ secrets.KUBE_CONFIG_BASE64 }}
+        run: |
+          KUBECFG="$RUNNER_TEMP/kubeconfig"
+          echo "$KUBE_CONFIG_BASE64" | base64 -d > "$KUBECFG"
+          echo "KUBECONFIG=$KUBECFG" >> $GITHUB_ENV
       - name: Deploy umbrella chart
+        if: ${{ success() }}
         run: |
           IMAGE_TAG=${{ steps.tag.outputs.tag }}
           REG=ghcr.io/${{ github.repository_owner }}
