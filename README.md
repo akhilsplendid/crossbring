@@ -1,0 +1,37 @@
+﻿# Crossbring — Data Platform (Swedish Jobs)
+
+Crossbring is a portfolio‑ready, production‑style data platform aligned to the Tryg360 Data Engineer role. It demonstrates SQL data modeling, Java ETL, CDC with event streams, governance, and GitOps deployment.
+
+## Projects
+- crossbring-jobmodel — PostgreSQL JobModel (dims + SCD facts) and views
+- crossbring-jobs-cdc-debezium — Local Kafka + Schema Registry + Kafka Connect + Debezium; source/sink connectors and scripts
+- crossbring-jobs-transformer-java-sql — Kafka Streams join/normalize CDC into JobModel staging (idempotent upserts)
+- crossbring-jobs-rt-analytics — Streaming KPIs (e.g., postings per region/day)
+- crossbring-jobs-governance-contracts — Git‑backed data contracts with CI lint
+- crossbring-jobs-marketplace — Trino catalog for curated JobModel datasets
+- crossbring-kafka-gitops-blueprints — ArgoCD apps, manifests, and Helm chart for GitOps
+- crossbring-jobs-batch-extractor — Batch fallback when CDC is restricted (pull→upsert or publish→Kafka)
+
+## Quickstart (Local)
+1) Apply JobModel
+   - Set `JOBMODEL_DSN` in `crossbring-jobmodel/.env`
+   - `python crossbring-jobmodel/scripts/apply_sql.py`
+2) Start local stack + register connectors
+   - `crossbring-jobs-cdc-debezium/scripts/local-up.ps1`
+3) Run transformer
+   - Build with Maven or use Dockerfile; env: `BOOTSTRAP_SERVERS`, `TOPIC_JOBS`, `TOPIC_JOB_DETAILS`, `TOPIC_OUT`
+
+## GitOps (Kubernetes)
+- Create secrets: `crossbring-kafka-gitops-blueprints/scripts/render-secrets.ps1 | kubectl apply -f -`
+- Apply Argo apps:
+  - `argo/applications/kafka.yaml`
+  - `argo/applications/schema-registry.yaml`
+  - `argo/applications/connect.yaml`
+  - Apps: choose `argo/applications/apps.yaml` (raw) or `apps-helm.yaml` (Helm)
+
+## CI/CD
+- GitHub Actions: builds images for transformer, RT analytics, and batch extractor; validates contracts and Argo paths.
+
+## Notes
+- Supabase logical replication may be restricted; the CronJob fallback (`jobs-batch-extractor`) keeps `jobmodel.stg_jobs` up‑to‑date.
+- Images are published to GHCR under `ghcr.io/akhilsplendid/crossbring/*`.
