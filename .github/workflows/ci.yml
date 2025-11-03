@@ -9,6 +9,9 @@ on:
 jobs:
   build-test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: geodata_jobs
 
     services:
       postgis:
@@ -55,20 +58,19 @@ jobs:
 
       - name: Init schema
         run: |
-          psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f geodata_jobs/sql/01_init_postgis.sql
-          psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f geodata_jobs/sql/02_analytics_queries.sql
+          psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f sql/01_init_postgis.sql
+          psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f sql/02_analytics_queries.sql
 
       - name: Install Python deps
         run: |
           python -m pip install --upgrade pip
-          pip install -r geodata_jobs/requirements.txt
+          pip install -r requirements.txt
           pip install ruff
 
       - name: Lint (ruff)
         run: |
-          ruff geodata_jobs/scripts geodata_jobs/viz
+          ruff scripts viz
 
       - name: Smoke test
         run: |
-          python geodata_jobs/scripts/smoke_test.py
-
+          python scripts/smoke_test.py
