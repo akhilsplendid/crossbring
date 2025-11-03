@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: crossbring-postgres
+    environment:
+      POSTGRES_DB: jobdb
+      POSTGRES_USER: jobuser
+      POSTGRES_PASSWORD: jobpass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U jobuser -d jobdb"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  api:
+    build: ./api
+    container_name: crossbring-api
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: jobdb
+      DB_USER: jobuser
+      DB_PASSWORD: jobpass
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  dashboard:
+    build: ./dashboard
+    container_name: crossbring-dashboard
+    environment:
+      API_URL: http://api:8000
+    depends_on:
+      - api
+    ports:
+      - "8501:8501"
+
+  airflow:
+    image: apache/airflow:2.8.4
+    container_name: crossbring-airflow
+    environment:
+      AIRFLOW__CORE__LOAD_EXAMPLES: "False"
+      AIRFLOW__WEBSERVER__RBAC: "True"
+      AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: sqlite:////opt/airflow/airflow.db
+      AIRFLOW_CONN_JOB_POSTGRES: postgresql+psycopg2://jobuser:jobpass@postgres:5432/jobdb
+      PIP_ADDITIONAL_REQUIREMENTS: apache-airflow-providers-postgres==5.8.0 psycopg2-binary==2.9.9
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8082:8080"
+    command: >
+      bash -c "airflow db init && \
+               airflow users create --role Admin --username admin --password admin123 --firstname Admin --lastname User --email admin@example.com && \
+               airflow webserver -p 8080 & airflow scheduler"
+
+volumes:
+  pgdata:
+
