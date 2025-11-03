@@ -1,44 +1,74 @@
 name: CI
+
 on:
   push:
+    branches: [ master, main ]
   pull_request:
+    branches: [ master, main ]
+
 jobs:
-  build-java:
+  build-test:
     runs-on: ubuntu-latest
+
+    services:
+      postgis:
+        image: postgis/postgis:16-3.4
+        env:
+          POSTGRES_DB: jobsdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd "pg_isready -U postgres -d jobsdb"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 20
+        ports:
+          - 5432:5432
+
+    env:
+      PGDATABASE: jobsdb
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGHOST: localhost
+      PGPORT: 5432
+      PG_DATABASE_URL: postgresql+psycopg2://postgres:postgres@localhost:5432/jobsdb
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v4
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          distribution: 'temurin'
-          java-version: '17'
-      - name: Build transformer
-        run: mvn -q -f crossbring/crossbring-jobs-transformer-java-sql/pom.xml -DskipTests package
-      - name: Build rt analytics
-        run: mvn -q -f crossbring/crossbring-jobs-rt-analytics/pom.xml -DskipTests package
-  validate-contracts:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-      - run: pip install pyyaml
-      - run: python crossbring/crossbring-jobs-governance-contracts/scripts/validate.py
-  validate-argo-paths:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-      - run: pip install pyyaml
-      - run: python scripts/validate_argo_paths.py
-  python-install:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: '3.x'
-      - run: pip install -r crossbring/crossbring-jobs-batch-extractor/requirements.txt
+          python-version: '3.11'
+
+      - name: Install system deps
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends postgresql-client
+
+      - name: Wait for DB
+        run: |
+          for i in {1..30}; do
+            if pg_isready -h $PGHOST -p $PGPORT -U $PGUSER -d $PGDATABASE; then
+              break; fi; sleep 2; done
+
+      - name: Init schema
+        run: |
+          psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f geodata_jobs/sql/01_init_postgis.sql
+          psql -h $PGHOST -U $PGUSER -d $PGDATABASE -f geodata_jobs/sql/02_analytics_queries.sql
+
+      - name: Install Python deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r geodata_jobs/requirements.txt
+          pip install ruff
+
+      - name: Lint (ruff)
+        run: |
+          ruff geodata_jobs/scripts geodata_jobs/viz
+
+      - name: Smoke test
+        run: |
+          python geodata_jobs/scripts/smoke_test.py
 

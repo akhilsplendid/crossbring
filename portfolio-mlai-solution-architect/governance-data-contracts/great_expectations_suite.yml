@@ -1,0 +1,14 @@
+expectations:
+  - expect_column_values_to_not_be_null:
+      column: id
+  - expect_column_values_to_not_be_null:
+      column: title
+  - expect_column_values_to_be_in_set:
+      column: employment_type
+      value_set: ["FT", "PT", "CONTRACT"]
+  - expect_column_values_to_match_regex:
+      column: country
+      regex: "^[A-Z]{2}$"
+  - expect_column_values_to_match_strftime_format:
+      column: posted_at
+      strftime_format: "%Y-%m-%dT%H:%M:%S"

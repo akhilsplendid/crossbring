@@ -1,0 +1,314 @@
+%%%%%%%%%%%%%%%%%
+% This is an example CV created using altacv.cls (v1.1.5, 1 December 2018) written by
+% LianTze Lim (liantze@gmail.com), based on the
+% Cv created by BusinessInsider at http://www.businessinsider.my/a-sample-resume-for-marissa-mayer-2016-7/?r=US&IR=T
+
+%
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%%%%%%%%%%%%%%%%
+
+%% If you are using \orcid or academicons
+%% icons, make sure you have the academicons
+%% option here, and compile with XeLaTeX
+%% or LuaLaTeX.
+% \documentclass[10pt,a4paper,academicons]{altacv}
+
+%% Use the "normalphoto" option if you want a normal photo instead of cropped to a circle
+% \documentclass[10pt,a4paper,normalphoto]{altacv}
+
+\documentclass[10pt,a4paper,ragged2e]{altacv}
+
+%% AltaCV uses the fontawesome and academicon fonts
+%% and packages.
+%% See texdoc.net/pkg/fontawecome and http://texdoc.net/pkg/academicons for full list of symbols. You MUST compile with XeLaTeX or LuaLaTeX if you want to use academicons.
+
+% Change the page layout if you need to
+\geometry{left=2cm,right=10cm,marginparwidth=6.8cm,marginparsep=1.2cm,top=1.25cm,bottom=1.25cm}
+
+% Change the font if you want to, depending on whether
+% you're using pdflatex or xelatex/lualatex
+\ifxetexorluatex
+  % If using xelatex or lualatex:
+  \setmainfont{Carlito}
+\else
+  % If using pdflatex:
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage[default]{lato}
+\fi
+
+% Change the colours if you want to
+\definecolor{VividPurple}{HTML}{1B365D}
+\definecolor{SlateGrey}{HTML}{202A44}
+\definecolor{LightGrey}{HTML}{2E2E2E}
+
+\colorlet{heading}{VividPurple}
+\colorlet{accent}{VividPurple}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{LightGrey}
+
+% Change the bullets for itemize and rating marker
+% for \cvskill if you want to
+\renewcommand{\itemmarker}{{\small\textbullet}}
+
+\renewcommand{\ratingmarker}{\faCircle}
+
+%% sample.bib contains your publications
+\addbibresource{sample.bib}
+% Enable hyperlinks for project links
+\usepackage[hidelinks]{hyperref}
+
+\begin{document}
+
+\name{Akhilesh Yadlapalli}
+ \tagline{ Software Developer — Java, Kubernetes, DevOps }
+% \tagline{Data Scientist}
+%\tagline{Business Analyst}
+% Cropped to square from https://en.wikipedia.org/wiki/Marissa_Mayer#/media/File:Marissa_Mayer_May_2014_(cropped).jpg, CC-BY 2.0
+%\photo{4cm}{pr.jpg}
+\personalinfo{%
+  % Not all of these are required!
+  % You can add your own with \printinfo{symbol}{detail}
+ % \email{akhilesh.yadlapalli@volvo.com}
+
+ %\email{akhilesh.yadlapalli@volvo.com}  
+ \email{akhileshybth@gmail.com}
+%   \phone{000-00-0000}
+%  \mailaddress{Address, Street, 00000 County}
+    \phone{+46 760397426}
+
+
+%  \twitter{@marissamayer}
+
+    \linkedin{https://www.linkedin.com/in/yadlapalli-akhilesh-9146a71b3/}% I'm just making this up though.
+%   \orcid{orcid.org/0000-0000-0000-0000} % Obviously making this up too. If you want to use this field (and also other academicons symbols), add "academicons" option to \documentclass{altacv}
+}
+
+
+%% Make the header extend all the way to the right, if you want.
+\begin{fullwidth}
+\makecvheader
+\end{fullwidth}
+
+%% Depending on your tastes, you may want to make fonts of itemize environments slightly smaller
+\AtBeginEnvironment{itemize}{\small}
+
+%% Provide the file name containing the sidebar contents as an optional parameter to \cvsection.
+%% You can always just use \marginpar{...} if you do
+%% not need to align the top of the contents to any
+%% \cvsection title in the "main" bar.
+% \divider
+%\cvskill{German}{3}
+
+
+% {About Me}
+% \begin{itemize}
+% \item An innovative and solutions-driven Data Engineer proficient in Python, SQL, and GCP with expertise in building efficient and scalable data solutions, optimizing data pipelines, and implementing ETL processes. Skilled in collaborating with cross-functional teams to translate complex business requirements into actionable data strategies.
+
+% \item Strong oral and written communication skills. Collaborative team player who 
+% can explain technical concepts to stakeholders. Passionate about 
+% leveraging data to solve challenges.
+
+% \item Proficient in Python, R, SQL, Tableau, PowerBI. Experience with big data tools 
+% like Spark, cloud platforms like GCP, and statistical modeling.
+% \end{itemize}
+
+
+
+
+
+\cvsection[page1sidebar]{Who am I?}
+\textbf{Software developer focused on modern Java services, containers, and GitOps.} I work across the lifecycle: analysis, design, implementation, testing, and deployment in \textbf{agile} teams. Recently I built a set of \textbf{Java Spring Boot} microservices and a \textbf{Vue 3} frontend, packaged with \textbf{Docker}, deployed to \textbf{Kubernetes/OpenShift} using \textbf{Helm} and \textbf{ArgoCD}, with \textbf{CI/CD} via GitHub Actions and Azure DevOps. I value \textbf{security, reliability, and social impact}—aligned with public-sector systems that deliver benefits for citizens.
+
+
+\cvsection{EXPERIENCE}
+\cvevent{AI/Fullstack Developer}{Myehealth}{May 2024 - Present}{Malmö, Sweden}
+\begin{itemize}
+\item \textbf{Designed, built and operated} \textbf{Spring Boot} services; integrated hardware data and backend ML systems
+\item \textbf{Build and maintain REST/GraphQL APIs with Spring Boot}; instrumented \textbf{Actuator} health and metrics
+\item \textbf{Containerize} services with \textbf{Docker}; Gradle builds and \textbf{CI/CD} via GitHub Actions/Azure DevOps
+\item \textbf{Design and deploy ML pipelines} for near real-time health data analysis and processing
+\item Integrate AI technologies for \textbf{personalized user insights and predictive health analytics}
+\item Improve reliability with \textbf{automated tests}, reviews and \textbf{secure} handling of data in production
+\end{itemize}
+\divider
+
+\cvevent{Software Developer}{Inframotion Labs}{Jan 2024 - Apr 2024}{Gothenburg, Sweden}
+\begin{itemize}
+\item \textbf{Built deep learning models} for automatic gaze analysis (CNN, multi-branch, transformer)
+\item \textbf{Implemented CV pipelines} for detection, feature extraction, and gaze estimation
+\item \textbf{Developed preprocessing and evaluation} workflows; collaborated in \textbf{agile} cycles with Git and reviews
+\end{itemize}
+\divider
+
+\cvevent{React Native Application Developer}{Invisense}{Jun 2023 - Jul 2023}{Remote, Sweden}
+\begin{itemize}
+\item \textbf{Redesigned legacy mobile app UI} focusing on \textbf{user experience and performance optimization}
+\item Added \textbf{testing and linting} to improve code quality and stability
+\item \textbf{Developed custom UI components and animations} for engaging interfaces
+\item Participated in \textbf{agile} sprints and cross-functional collaboration
+\end{itemize}
+
+
+
+
+% \divider
+
+% \cvevent{Google cloud developer}{Google Cloud Program}{December 2020}{Hyderabad, India}
+% \begin{itemize}
+% \item Learned Google Cloud Platform services including Kubernetes, AI/ML APIs, and explainable AI. Deployed cloud environments and containers. Performed data and ML tasks on Google Cloud.
+
+% \end{itemize}
+
+
+% \divider
+
+
+\cvsection[page2sidebar]{Projects}
+\cvproject{\textbf{Caseservice — Spring Boot REST}} 
+\smallskip 
+\cvtag{Java} \cvtag{Spring Boot} \cvtag{Gradle} \cvtag{Docker} \cvtag{Kubernetes} \cvtag{Helm} \cvtag{ArgoCD}
+\smallskip 
+\vspace{0.1cm} 
+\begin{itemize}
+\item \textbf{Purpose:} Stateless REST backend for case data; demonstrates Spring Boot, Docker, and Kubernetes deployment with Helm/ArgoCD
+\item \textbf{Java 21 + Spring Boot} REST microservice with tests and Actuator health/metrics
+\item Containerized via \textbf{Docker}; deployed with \textbf{Helm} templates and \textbf{ArgoCD} Application
+\item Repo: \href{https://github.com/akhilsplendid/caseservice}{github.com/akhilsplendid/caseservice}
+\end{itemize}
+
+\divider \newline
+\cvproject{\textbf{Paymentservice — JMS with ActiveMQ Artemis}} 
+\smallskip 
+\cvtag{JMS} \cvtag{ActiveMQ Artemis} \cvtag{Spring Boot} \cvtag{Docker} \cvtag{K8s} \cvtag{Helm}
+\smallskip 
+\vspace{0.1cm} 
+\begin{itemize}
+\item \textbf{Purpose:} Asynchronous messaging using JMS with ActiveMQ Artemis for reliable payment processing
+\item \textbf{REST → queue} flow with \textbf{JmsTemplate} producer and \textbf{@JmsListener} consumer
+\item \textbf{Testcontainers} integration test spins up Artemis in CI
+\item Repo: \href{https://github.com/akhilsplendid/paymentservice}{github.com/akhilsplendid/paymentservice}
+\end{itemize}
+
+\divider \newline
+\cvproject{\textbf{Eligibility — Hazelcast Caching}} 
+\smallskip 
+\cvtag{Hazelcast} \cvtag{Spring Cache} \cvtag{Actuator} \cvtag{Prometheus}
+\smallskip 
+\vspace{0.1cm} 
+\begin{itemize}
+\item \textbf{Purpose:} Low-latency eligibility responses via Hazelcast caching; exposes health and metrics for operations
+\item \textbf{@Cacheable} endpoint backed by \textbf{Hazelcast} with TTL and metrics at /actuator/prometheus
+\item Helm ServiceMonitor toggle for Prometheus Operator
+\item Repo: \href{https://github.com/akhilsplendid/eligibility}{github.com/akhilsplendid/eligibility}
+\end{itemize}
+
+\divider \newline
+\cvproject{\textbf{Citizen Portal — Vue 3 + Vite}} 
+\smallskip 
+\cvtag{Vue 3} \cvtag{Vite} \cvtag{Axios} \cvtag{Nginx} \cvtag{Docker} \cvtag{K8s}
+\smallskip 
+\vspace{0.1cm} 
+\begin{itemize}
+\item \textbf{Purpose:} Frontend UI to interact with backend services; demonstrates Vue build pipeline and containerized delivery
+\item Simple UI that calls \textbf{caseservice} and \textbf{eligibility} services
+\item Built as static assets served by \textbf{Nginx} container; Helm chart with probes
+\item Repo: \href{https://github.com/akhilsplendid/citizen-portal}{github.com/akhilsplendid/citizen-portal}
+\end{itemize}
+
+\divider \newline
+\cvproject{\textbf{Supply Chain Communication Interface (Master's Thesis at Volvo)}} 
+\smallskip 
+\cvtag{Python} \cvtag{Data Analysis} \cvtag{Linux} \cvtag{Testing}
+\smallskip 
+\vspace{0.1cm} 
+\begin{itemize}
+\item \textbf{Purpose:} Apply ML/NLP to streamline supply chain communication; automate analysis and monitoring
+\item \textbf{Developed automated system for email analysis using machine learning models}
+\item \textbf{Implemented test automation reducing processing time by 30\%}
+\item \textbf{Created data visualization dashboard for performance monitoring}
+\end{itemize}
+
+
+
+
+\cvsection{Certification}
+\vspace{0.1cm} \begin{itemize}
+% \item Google Cloud Certified Professional Cloud Architect.
+\item Microsoft Power BI Data Analyst Professional Certificate
+\item Python for Data Science, AI \& Development by IBM
+\item Configure NGINX on a Cloud Server: Digital Ocean \& AWS - Udemy
+\item Google Data Analytics Professional Certificate
+\item IBM Data Science Professional Certificate
+\item Python Programming: Machine Learning, Deep Learning - Udemy
+
+
+
+\end{itemize}
+
+
+
+
+% \cvsection{Personal Details}
+% \begin{itemize}
+%     \item Languages Known : English, Telugu, Hindi 
+%     \item Hobbies : PC Gaming, Photo editing, Logo designing and Basketball.
+% \end{itemize}
+
+%\divider
+
+% \cvevent{Product Engineer}{Google}{23 June 1999 -- 2001}{Palo Alto, CA}
+
+% \begin{itemize}
+% \item Joined the company as employe \#20 and female employee \#1
+% \item Developed targeted advertisement in order to use user's search queries and show them related ads
+% \end{itemize}
+
+%\cvsection{A Day of My Life}
+
+% Adapted from @Jake's answer from http://tex.stackexchange.com/a/82729/226
+% \wheelchart{outer radius}{inner radius}{
+% comma-separated list of value/text width/color/detail}
+% Some ad-hoc tweaking to adjust the labels so that they don't overlap
+% \wheelchart{1.5cm}{0.5cm}{%
+%   10/10em/accent!30/Sleeping \& dreaming about work,
+%   25/9em/accent!60/Public resolving issues with Yahoo!\ investors,
+%   5/13em/accent!10/\footnotesize\\[1ex]New York \& San Francisco Ballet Jawbone board member,
+%   20/15em/accent!40/Spending time with family,
+%   5/8em/accent!20/\footnotesize Business development for Yahoo!\ after the Verizon acquisition,
+%   30/9em/accent/Showing Yahoo!\ employees that their work has meaning,
+%   5/8em/accent!20/Baking cupcakes
+% }
+
+\clearpage
+
+% \cvsection[page2sidebar]{Publications}
+
+\nocite{*}
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faBook}{Books}},type=book]
+
+% \divider
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faFileTextO}{Journal Articles}}, type=article]
+
+% \divider
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faGroup}{Conference Proceedings}},type=inproceedings]
+
+% %% If the NEXT page doesn't start with a \cvsection but you'd
+% %% still like to add a sidebar, then use this command on THIS
+% %% page to add it. The optional argument lets you pull up the
+% %% sidebar a bit so that it looks aligned with the top of the
+% %% main column.
+% % \addnextpagesidebar[-1ex]{page3sidebar}
+
+
+\end{document}

@@ -1,0 +1,124 @@
+% like Spark, cloud platforms like GCP, and statistical modeling.
+% \end{itemize}
+
+
+
+
+
+\cvsection[page1sidebar]{Who am I?}
+\textbf{Data Engineer focused on SQL data modeling, Java ETL and event streaming.} I design and build \textbf{relational models}, develop \textbf{Java + SQL} transformations, and run \textbf{CDC/streaming} pipelines with \textbf{Kafka, Debezium, Kafka Connect}. I operate on \textbf{Kubernetes} with \textbf{Helm/ArgoCD} under a \textbf{GitOps} workflow, with an emphasis on \textbf{data quality, governance and reliable delivery}.
+
+\cvsection{Skills}
+\cvtag{SQL} \cvtag{Data Modeling} \cvtag{PostgreSQL} \cvtag{Java} \cvtag{Kafka} \cvtag{Debezium} \cvtag{Kafka Connect} \cvtag{Kafka Streams} \\
+\cvtag{Kubernetes} \cvtag{Helm} \cvtag{ArgoCD} \cvtag{Trino} \cvtag{GitHub Actions} \cvtag{Git} \cvtag{Linux} \cvtag{Docker}
+
+
+\cvsection{EXPERIENCE}
+\cvevent{AI/Fullstack Developer}{Myehealth}{May 2024 - Present}{Malmö, Sweden}
+\begin{itemize}
+\item Develop and maintain medical platform integrating \textbf{hardware data monitoring and backend ML systems}
+\item \textbf{Build scalable backend APIs using Java Spring Boot} for medical device data processing
+\item Implement \textbf{system architecture} using Java Spring Boot, Docker, and GraphQL for scalable backend
+\item \textbf{Design and deploy ML pipelines} for real-time health data analysis and processing
+\item Integrate AI technologies for \textbf{personalized user insights and predictive health analytics}
+\item Manage deployment workflows using \textbf{CI/CD practices with Git} for reliable service delivery
+\end{itemize}
+\divider
+
+\cvevent{Software Developer}{Inframotion Labs}{Jan 2024 - April 2024}{Gothenburg, Sweden}
+\begin{itemize}
+\item \textbf{Developed deep learning models for automatic gaze analysis} using CNN, Multi-branch, and Transformer-based architectures for real-time eye tracking
+\item \textbf{Implemented computer vision pipelines} for eye detection, feature extraction, and gaze estimation using Python and deep learning frameworks
+\item \textbf{Built data preprocessing systems} and optimized neural network architectures including GazeNet and Spatial Weight CNN models
+\item Collaborated in \textbf{agile development cycles} with focus on \textbf{ML model performance optimization and Git version control}
+\end{itemize}
+
+% \divider
+
+% \cvevent{Google cloud developer}{Google Cloud Program}{December 2020}{Hyderabad, India}
+% \begin{itemize}
+% \item Learned Google Cloud Platform services including Kubernetes, AI/ML APIs, and explainable AI. Deployed cloud environments and containers. Performed data and ML tasks on Google Cloud.
+\cvsection[page2sidebar]{Projects}
+\cvproject{\textbf{Crossbring: End-to-End Data Platform for Job Market Analytics}}
+\smallskip \cvtag{PostgreSQL} \cvtag{Kafka} \cvtag{Java} \cvtag{Kubernetes} \cvtag{GitOps}
+\begin{itemize}
+  \item Built a production-style data platform processing Swedish job postings with CDC pipelines, real-time analytics, and governed data models
+  \item Architected JobModel using dimensional modeling and SCD Type 2 to track history for 100K\+ postings
+  \item Implemented streaming ETL with Kafka Streams (Java) to normalize heterogeneous sources into a unified schema with sub-second latency
+  \item Deployed on Kubernetes via ArgoCD GitOps managing Kafka, Schema Registry, Connect, and microservices with Helm
+  \item Technologies: PostgreSQL, Kafka, Debezium, Java 17, Docker, Kubernetes, ArgoCD, Maven
+  \item GitHub: \href{https://github.com/akhilsplendid/crossbring}{github.com/akhilsplendid/crossbring}
+  \item Repos: \texttt{crossbring-jobmodel}, \texttt{crossbring-jobs-cdc-debezium}, \texttt{crossbring-jobs-transformer-java-sql}, \texttt{crossbring-jobs-rt-analytics}, \texttt{crossbring-kafka-gitops-blueprints}, \texttt{crossbring-jobs-batch-extractor}, \texttt{crossbring-jobs-governance-contracts}
+\end{itemize}
+\divider \newline
+\cvproject{\textbf{Real-Time CDC Pipeline with Debezium}}
+\smallskip \cvtag{Debezium} \cvtag{Kafka Connect} \cvtag{PostgreSQL} \cvtag{Avro}
+\begin{itemize}
+  \item Designed and deployed CDC from PostgreSQL to Kafka topics with schema evolution support
+  \item Configured Connect clusters with Debezium source and JDBC sink for bi-directional flow
+  \item Implemented Python batch extractor fallback when CDC restrictions apply (e.g., Supabase)
+  \item Established schema governance using Confluent Schema Registry with Avro for backward compatibility
+  \item Repo paths: \texttt{crossbring-jobs-cdc-debezium}, \texttt{crossbring-jobs-batch-extractor}, \texttt{crossbring-jobs-governance-contracts}
+\end{itemize}
+\divider \newline
+\cvproject{\textbf{Streaming Analytics Engine}}
+\smallskip \cvtag{Kafka Streams} \cvtag{Java} \cvtag{Spring Boot} \cvtag{Materialized Views}
+\begin{itemize}
+  \item Developed real-time KPI engine computing regional posting trends with windowed aggregations and materialized state stores
+  \item Built fault-tolerant microservice in Spring Boot with containerized deployment achieving 99.5\% uptime SLA
+  \item Optimized processing via state management and windowing for efficient resource utilization
+  \item Repo paths: \texttt{crossbring-jobs-rt-analytics}, \texttt{crossbring-jobs-transformer-java-sql}
+\end{itemize}
+\divider \newline
+\cvproject{\textbf{Infrastructure as Code \& GitOps}}
+\smallskip \cvtag{ArgoCD} \cvtag{Helm} \cvtag{Kubernetes} \cvtag{CI/CD}
+\begin{itemize}
+  \item Created GitOps framework using ArgoCD for declarative infrastructure across environments
+  \item Authored Helm charts with templated configs and secrets management for apps and platform
+  \item Automated CI/CD with GitHub Actions for container builds, contract validation, and deployments
+  \item Implemented monitoring with health checks, readiness probes, and resource limits for stability
+  \item Repo path: \texttt{crossbring-kafka-gitops-blueprints}
+\end{itemize}
+% \end{itemize}
+
+%\cvsection{A Day of My Life}
+
+% Adapted from @Jake's answer from http://tex.stackexchange.com/a/82729/226
+% \wheelchart{outer radius}{inner radius}{
+% comma-separated list of value/text width/color/detail}
+% Some ad-hoc tweaking to adjust the labels so that they don't overlap
+% \wheelchart{1.5cm}{0.5cm}{%
+%   10/10em/accent!30/Sleeping \& dreaming about work,
+%   25/9em/accent!60/Public resolving issues with Yahoo!\ investors,
+%   5/13em/accent!10/\footnotesize\\[1ex]New York \& San Francisco Ballet Jawbone board member,
+%   20/15em/accent!40/Spending time with family,
+%   5/8em/accent!20/\footnotesize Business development for Yahoo!\ after the Verizon acquisition,
+%   30/9em/accent/Showing Yahoo!\ employees that their work has meaning,
+%   5/8em/accent!20/Baking cupcakes
+% }
+
+\clearpage
+
+% \cvsection[page2sidebar]{Publications}
+
+\nocite{*}
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faBook}{Books}},type=book]
+
+% \divider
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faFileTextO}{Journal Articles}}, type=article]
+
+% \divider
+
+% \printbibliography[heading=pubtype,title={\printinfo{\faGroup}{Conference Proceedings}},type=inproceedings]
+
+% %% If the NEXT page doesn't start with a \cvsection but you'd
+% %% still like to add a sidebar, then use this command on THIS
+% %% page to add it. The optional argument lets you pull up the
+% %% sidebar a bit so that it looks aligned with the top of the
+% %% main column.
+% % \addnextpagesidebar[-1ex]{page3sidebar}
+
+
+\end{document}

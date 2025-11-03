@@ -1,0 +1,120 @@
+%%%%%%%%%%%%%%%%%
+% This is an example CV created using altacv.cls (v1.1.5, 1 December 2018) written by
+% LianTze Lim (liantze@gmail.com), based on the
+% Cv created by BusinessInsider at http://www.businessinsider.my/a-sample-resume-for-marissa-mayer-2016-7/?r=US&IR=T
+
+%
+%% It may be distributed and/or modified under the
+%% conditions of the LaTeX Project Public License, either version 1.3
+%% of this license or (at your option) any later version.
+
+%% The latest version of this license is in
+%%    http://www.latex-project.org/lppl.txt
+%% and version 1.3 or later is part of all distributions of LaTeX
+%% version 2003/12/01 or later.
+%%%%%%%%%%%%%%%%
+
+%% If you are using \orcid or academicons
+%% icons, make sure you have the academicons
+%% option here, and compile with XeLaTeX
+%% or LuaLaTeX.
+% \documentclass[10pt,a4paper,academicons]{altacv}
+
+%% Use the "normalphoto" option if you want a normal photo instead of cropped to a circle
+% \documentclass[10pt,a4paper,normalphoto]{altacv}
+
+\documentclass[10pt,a4paper,ragged2e]{altacv}
+
+%% AltaCV uses the fontawesome and academicon fonts
+%% and packages.
+%% See texdoc.net/pkg/fontawecome and http://texdoc.net/pkg/academicons for full list of symbols. You MUST compile with XeLaTeX or LuaLaTeX if you want to use academicons.
+
+% Change the page layout if you need to
+\geometry{left=2cm,right=10cm,marginparwidth=6.8cm,marginparsep=1.2cm,top=1.25cm,bottom=1.25cm}
+
+% Change the font if you want to, depending on whether
+% you're using pdflatex or xelatex/lualatex
+\ifxetexorluatex
+  % If using xelatex or lualatex:
+  \setmainfont{Carlito}
+\else
+  % If using pdflatex:
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage[default]{lato}
+\fi
+
+% Change the colours if you want to
+\definecolor{VividPurple}{HTML}{1B365D}
+\definecolor{SlateGrey}{HTML}{202A44}
+\definecolor{LightGrey}{HTML}{2E2E2E}
+
+\colorlet{heading}{VividPurple}
+\colorlet{accent}{VividPurple}
+\colorlet{emphasis}{SlateGrey}
+\colorlet{body}{LightGrey}
+
+% Change the bullets for itemize and rating marker
+% for \cvskill if you want to
+\renewcommand{\itemmarker}{{\small\textbullet}}
+
+\renewcommand{\ratingmarker}{\faCircle}
+% Enable hyperlinks
+\usepackage[hidelinks]{hyperref}
+
+
+%% sample.bib contains your publications
+\addbibresource{sample.bib}
+
+\begin{document}
+
+\name{Akhilesh Yadlapalli}
+ \tagline{ Data Engineer -- SQL, Java, Kafka, Kubernetes }
+% \tagline{Data Scientist}
+%\tagline{Business Analyst}
+% Cropped to square from https://en.wikipedia.org/wiki/Marissa_Mayer#/media/File:Marissa_Mayer_May_2014_(cropped).jpg, CC-BY 2.0
+%\photo{4cm}{pr.jpg}
+\personalinfo{%
+  % Not all of these are required!
+  % You can add your own with \printinfo{symbol}{detail}
+ % \email{akhilesh.yadlapalli@volvo.com}
+
+ %\email{akhilesh.yadlapalli@volvo.com}  
+ \email{akhileshybth@gmail.com}
+%   \phone{000-00-0000}
+%  \mailaddress{Address, Street, 00000 County}
+    \phone{+46 760397426}
+
+
+%  \twitter{@marissamayer}
+
+    \linkedin{https://www.linkedin.com/in/yadlapalli-akhilesh-9146a71b3/}% I'm just making this up though.
+%   \orcid{orcid.org/0000-0000-0000-0000} % Obviously making this up too. If you want to use this field (and also other academicons symbols), add "academicons" option to \documentclass{altacv}
+}
+
+
+%% Make the header extend all the way to the right, if you want.
+\begin{fullwidth}
+\makecvheader
+\end{fullwidth}
+
+%% Depending on your tastes, you may want to make fonts of itemize environments slightly smaller
+\AtBeginEnvironment{itemize}{\small}
+
+%% Provide the file name containing the sidebar contents as an optional parameter to \cvsection.
+%% You can always just use \marginpar{...} if you do
+%% not need to align the top of the contents to any
+%% \cvsection title in the "main" bar.
+% \divider
+%\cvskill{German}{3}
+
+
+% {About Me}
+% \begin{itemize}
+% \item An innovative and solutions-driven Data Engineer proficient in Python, SQL, and GCP with expertise in building efficient and scalable data solutions, optimizing data pipelines, and implementing ETL processes. Skilled in collaborating with cross-functional teams to translate complex business requirements into actionable data strategies.
+
+% \item Strong oral and written communication skills. Collaborative team player who 
+% can explain technical concepts to stakeholders. Passionate about 
+% leveraging data to solve challenges.
+
+% \item Proficient in Python, R, SQL, Tableau, PowerBI. Experience with big data tools 

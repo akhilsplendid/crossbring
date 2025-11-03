@@ -1,0 +1,4 @@
+*** Begin Patch
+*** Add File: TEST_APPLY_PATCH.txt
++hello
+*** End Patch

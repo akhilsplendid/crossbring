@@ -1,0 +1,77 @@
+MaintMaster – IT-tekniker med intresse för 
+DevOps 
+
+MaintMaster växer och vi behöver stärka vår interna IT med en ny drifting IT-ingenjör som i 
+första hand kan ta hand om allt IT-relaterat som behövs för att få den egna verksamheten i 
+fem länder ska kunna fungera, men också på sikt kunna hjälpa till med drift och underhåll av 
+infrastrukturen i våra kundtillvända tjänster i Microsoft Azure. 
+
+Vem är du? 
+
+Du är en noggrann, strukturerad och serviceinriktad IT-tekniker som gillar att lösa problem så 
+att verksamheten kan fungera så bra som möjligt. Du har erfarenhet från modern IT-drift i 
+stort och smått i framför allt Microsoftmiljö och skulle över tid kunna tänka dig att bredda din 
+kompetens till flera områden inom Azures tjänsteerbjudande. 
+
+Din roll på Maintmaster 
+
+Dit huvudfokus till att börja med kommer att vara inom internt IT-stöd till våra ca 90 
+användare i fem länder. Det handlar om allt från inköp, klienthantering och användarsupport 
+till strategiskt IT-säkerhetsarbete och resurshantering i Azure. Vi tror och hoppas att du också 
+har ett intresse för att gradvis börjar jobba även med infrastrukturen för vårt eget 
+tjänsteerbjudande i Azure. Då handlar det om att hantera kuberneteskluster, databaser och 
+massor av andra tekniker som vi använder för att leverera våra tjänster till våra kunder på ett 
+effektivt och skalbart sätt. Vid det laget kommer du att jobba tätt ihop med våra 
+utvecklingsteam och produktstyrning. Du rapporterar direkt till vår CTO. 
+
+Vårt erbjudande 
+
+Det du förväntar dig av ett modernt svenskt IT-bolag, plus: 
+
+•  4 timmar kompetensutveckling per vecka. 
+•  Möjlighet att arbeta på distans 1–2 dagar per vecka. 
+•  Rimliga människor och korta beslutsvägar. 
+
+Ansökan 
+
+Anställning sker direkt av MaintMaster med överenskommen takt och start. Vi intervjuar 
+löpande och tjänsten kan tillsättas snabbt. Skicka frågor eller ansökan till 
+kaj.nystrom@maintmaster.com. 
+
+Dina kvalifikationer 
+
+Du har troligen: 
+
+ 
+ 
+•  Relevant högskoleutbildning eller likvärdig erfarenhet inom IT, systemdrift eller 
+
+liknande. 
+
+•  Erfarenhet av att sätta upp och drifta många olika sorters resurser i Microsoft Azure. 
+•  Scripting och automation i Bash och/eller PowerShell. 
+•  Erfarenhet av att automatisera drift av Windows och Linux i produktion. 
+•  Kunskap om klienthantering i t.ex. Intune, MDM och RMM 
+•  Grundläggande kompetens om nätverk, säkerhet, identitet och policies. 
+•  Erfarenhet av klienthantering och applikationspaketering på Windows och IOS. 
+•  God kommunikationsförmåga på svenska och engelska. 
+•  Ett serviceinriktat mindset och uppträdande. 
+
+Det är en bonus om du också har erfarenhet av: 
+
+•  Kubernetes och containers (t.ex. Docker). 
+•  CI/CD med GitHub Actions eller Azure DevOps. 
+•  Observability: loggning, metrik och tracing (t.ex. Azure Monitor, Grafana). 
+•  SRE-principer, kapacitetsplanering, cost management och incidenthantering. 
+•  Databaser som t.ex. SQL Server  
+•  B2B SaaS i internationell miljö. 
+
+Om MaintMaster 
+
+MaintMaster har idag över 80 anställda i sex länder, över 45 000 användare och kunder i mer 
+än 25 länder. Vi levererar tjänster för underhållsstyrning och produktionsoptimering till 
+företag som vill ta nästa steg mot operationell excellens. 
+
+ 
+ 
+
