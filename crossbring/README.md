@@ -11,6 +11,7 @@
 Crossbring is a portfolio-ready, production-style data platform. It demonstrates SQL data modeling, Java ETL, CDC with event streams, governance, and GitOps deployment.
 
 ## Projects
+- company-os - AI organization operating model, communication channels, approvals, reports, and agent hierarchy
 - crossbring-jobmodel - PostgreSQL JobModel (dims + SCD facts) and views
 - crossbring-jobs-cdc-debezium - Local Kafka + Schema Registry + Kafka Connect + Debezium; source/sink connectors and scripts
 - crossbring-jobs-transformer-java-sql - Kafka Streams join/normalize CDC into JobModel staging (idempotent upserts)
