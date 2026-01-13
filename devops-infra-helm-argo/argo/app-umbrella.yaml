@@ -6,9 +6,9 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://your.git.repo/your-projects.git
+    repoURL: https://github.com/akhilsplendid/devops-infra-helm-argo.git
     targetRevision: main
-    path: devops-infra-helm-argo/helm/umbrella
+    path: helm/umbrella
   destination:
     server: https://kubernetes.default.svc
     namespace: social

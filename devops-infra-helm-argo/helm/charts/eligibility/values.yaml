@@ -1,0 +1,11 @@
+image:
+  repository: your-registry/eligibility
+  tag: latest
+  pullPolicy: IfNotPresent
+service:
+  port: 80
+  targetPort: 8083
+replicaCount: 1
+monitoring:
+  enabled: false
+  interval: 30s

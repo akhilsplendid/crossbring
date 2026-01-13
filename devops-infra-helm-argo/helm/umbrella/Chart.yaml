@@ -6,13 +6,13 @@ version: 0.1.0
 dependencies:
   - name: caseservice
     version: 0.1.0
-    repository: "file://../../java-spring-caseservice/helm/caseservice"
+    repository: "file://../charts/caseservice"
   - name: paymentservice
     version: 0.1.0
-    repository: "file://../../java-spring-paymentservice-messaging/helm/paymentservice"
+    repository: "file://../charts/paymentservice"
   - name: eligibility
     version: 0.1.0
-    repository: "file://../../java-spring-eligibility-hazelcast/helm/eligibility"
+    repository: "file://../charts/eligibility"
   - name: citizen-portal
     version: 0.1.0
-    repository: "file://../../vue-citizen-portal/helm/citizen-portal"
+    repository: "file://../charts/citizen-portal"
