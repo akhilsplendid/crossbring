@@ -35,6 +35,8 @@ def main():
     ap.add_argument("--horizon", type=int, default=21)
     ap.add_argument("--capital", type=float, default=100_000)
     ap.add_argument("--data-start", default="2013-01-01")
+    ap.add_argument("--rebalance-days", type=int, default=21,
+                    help="keep the previous portfolio unless this many trading days passed or the regime flipped")
     ap.add_argument("--no-regime-filter", action="store_true")
     a = ap.parse_args()
     os.makedirs(JOURNAL, exist_ok=True)
@@ -72,12 +74,34 @@ def main():
     idx = prices[INDEX_TICKER]
     risk_on = bool(idx.iloc[-1] > idx.rolling(200).mean().iloc[-1])
 
-    w = pd.Series(0.0, index=pred.index)
-    if risk_on or a.no_regime_filter:
-        w[pred.head(a.top_n).index] = 1.0 / a.top_n
+    # Decide whether to rebalance or carry the previous portfolio forward.
+    prev_w, prev_date, prev_risk_on, reason = None, None, None, "first run"
+    if os.path.exists(targets_path):
+        prev = pd.read_csv(targets_path, parse_dates=["date"])
+        if (prev["date"] == today).any():
+            print(f"Target for {today.date()} already recorded; nothing to add.")
+            return
+        prev_date = prev["date"].max()
+        prev_w = prev[prev["date"] == prev_date].set_index("ticker")["weight"]
+        prev_risk_on = bool(prev_w.sum() > 0)
+        days_since = len(prices.loc[prev_date:today]) - 1
+        if prev_risk_on != (risk_on or a.no_regime_filter):
+            reason = "regime flipped"
+        elif days_since >= a.rebalance_days:
+            reason = f"{days_since} trading days since last rebalance"
+        else:
+            reason = None
+    if reason is None:
+        w = prev_w.reindex(pred.index).fillna(0.0)
+        print(f"Carrying forward the portfolio set on {prev_date.date()} (rebalance every {a.rebalance_days} trading days).")
+    else:
+        w = pd.Series(0.0, index=pred.index)
+        if risk_on or a.no_regime_filter:
+            w[pred.head(a.top_n).index] = 1.0 / a.top_n
+        print(f"Rebalancing: {reason}.")
     out = pd.DataFrame({"date": today, "ticker": w.index, "weight": w.values,
                         "pred_excess_ret": pred.reindex(w.index).values,
-                        "sek": (w * a.capital).values})
+                        "sek": (w * a.capital).values, "rebalanced": reason is not None})
     out.to_csv(targets_path, mode="a", header=not os.path.exists(targets_path), index=False)
 
     print(f"\nModel trained on {len(train):,} rows up to {train.index.get_level_values('date').max().date()}")
