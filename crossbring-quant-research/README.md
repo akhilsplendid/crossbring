@@ -4,7 +4,9 @@ An honest one-year backtest of what a single person can run on Swedish equities 
 retail broker account. Built to answer one question: **what does it take to average
 50 SEK per trading day, and which variables decide profit or loss?**
 
-See `RESULTS_2026-10-14.txt` for the full output of the run described below.
+Two layers: simple rule-based strategies (`run.py`) and a walk-forward machine-learning
+model that keeps retraining as new data arrives (`run_ml.py`, `live.py`). Full outputs of
+every run are in `results/`.
 
 ## Method
 
@@ -57,6 +59,63 @@ See `RESULTS_2026-10-14.txt` for the full output of the run described below.
    7-8% rather than last year's 20%, is roughly 160,000 to 180,000 SEK in an index fund.
    No strategy here beat that benchmark after costs.
 
+## Machine-learning layer: learn from the past, keep learning in the present
+
+`features.py` turns prices into 22 features per stock per day (lagged returns, volatility,
+moving-average ratios, 52-week distance, cross-sectional ranks, index regime). The target
+is the forward return in excess of the cross-sectional mean, so the model learns *which
+stocks beat the others*, not whether the market goes up.
+
+`learner.py` trains walk-forward: the model that predicts day *d* was fit only on targets
+fully realised before *d*, then it is retrained every 21 trading days on the expanding
+history. Every prediction from 2017 onward is therefore out of sample. Three learners:
+ridge regression, LightGBM, and a true online SGD model updated every day.
+
+### Results, ten years out of sample (2017-01 to 2026-10), net of costs and tax
+
+| Model | Rank IC (t-stat) | Annual return | Sharpe | Beat index, years of 10 |
+|---|---|---|---|---|
+| Buy & hold OMXS30 | | 7.3% | 0.50 | |
+| 12-month momentum, top 10, monthly | | **8.8%** | **0.73** | 7 |
+| Ridge, 21-day horizon, top 10, monthly | 0.011 (2.2) | 6.8% | 0.56 | 6 |
+| LightGBM, 21-day, top 10, monthly | 0.005 (1.0) | 5.2% | 0.46 | 6 |
+| LightGBM, 5-day, top 5, weekly | **0.019 (3.9)** | 2.8% | 0.26 | 3 |
+| Online SGD, daily updates | -0.023 (-4.5) | negative | | 3 |
+
+Rank IC is the Spearman correlation between predicted and realised rank each day. Zero is
+a coin flip. A t-stat above 2 means the skill is statistically real.
+
+### What this shows
+
+1. **The model does learn something real.** The 5-day LightGBM has an IC of 0.019 with a
+   t-stat near 4 over ten years. That is genuine, repeatable predictive skill.
+2. **The skill is too small to pay for the trading it needs.** Acting on a 5-day signal
+   means weekly rotation, which cost 65% of capital over the decade. The same model ends
+   up at 2.8% a year against 7.3% for doing nothing.
+3. **Slowing it down saves costs but loses the signal.** At a 21-day horizon the
+   LightGBM IC collapses to noise. Ridge keeps a little skill and lands roughly at the
+   index after costs. It beat the index last year by a wide margin (28% vs 20%), which
+   is exactly the kind of single-year result this project exists to distrust.
+4. **The literal "learns every day" model learned the wrong thing.** Online SGD with a
+   constant learning rate chases the latest regime and ends up anti-predictive. Daily
+   updating is not a feature when the data is this noisy.
+5. **The simplest rule won.** Twelve-month momentum, rebalanced monthly, beat every
+   model and the index over ten years with a smaller drawdown. This is the published
+   academic result reproduced on Swedish data with real costs.
+
+### Keeping it learning: `live.py`
+
+```bash
+python live.py              # ridge, top 10, monthly horizon, 100k SEK
+```
+
+Each run refreshes prices, retrains on all realised history, prints today's target
+portfolio and appends it to `journal/targets.csv`. On the next run it marks the previous
+target to market and appends the result to `journal/paper_pnl.csv`. Run it daily from
+cron and the model builds a live paper track record before any real money is involved.
+There is no broker execution: Avanza and Nordnet expose no public trading API, and the
+paper record should earn real capital first.
+
 ## Running it
 
 ```bash
@@ -64,7 +123,13 @@ pip install -r requirements.txt
 python run.py --capital 100000 --target-sek-day 50
 python run.py --capital 150000 --courtage 0.00069   # Avanza Medium tier
 python run.py --refresh                             # re-download data
+python run_ml.py --model ridge --horizon 21 --rebalance ME --top-n 10   # best ML config
+python run_ml.py --model lgbm                       # 5-day weekly, highest IC, highest cost
+python run_ml.py --model online --horizon 21 --rebalance ME --top-n 10
 ```
+
+LightGBM runs take about a minute. Do not run several in parallel on a small machine;
+LightGBM's thread pool oversubscribes and they crawl.
 
 ## Caveats
 

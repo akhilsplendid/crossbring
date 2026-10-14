@@ -1,0 +1,85 @@
+Data 2013-01-02 -> 2026-10-13, 26 stocks, 83,434 panel rows, 20 features
+Model online, retrain every 21d, horizon 21d, top 10, rebalance ME, regime filter on
+
+====================================================================================================
+PREDICTION QUALITY (all out-of-sample). Rank IC: 0 = coin flip. Good retail ML sits at 0.02-0.05.
+A t-stat above ~2 means the IC is distinguishable from zero.
+====================================================================================================
+Full walk-forward  2017-01-10 -> 2026-09-14:  mean IC -0.0227   IC t-stat -4.53   top-5 hit rate 47.1%
+Last year only     2025-10-14 -> 2026-09-14:  mean IC -0.0267   IC t-stat -1.85   top-5 hit rate 50.1%
+
+IC by year:
+        IC  count      t
+date                    
+2017 -0.16    248 -11.55
+2018  0.01    252   0.72
+2019  0.01    247   0.47
+2020  0.11    252   7.30
+2021 -0.02    253  -1.35
+2022 -0.11    253  -7.72
+2023  0.02    251   1.38
+2024  0.02    251   0.99
+2025 -0.07    249  -4.59
+2026 -0.04    176  -2.18
+
+====================================================================================================
+LAST YEAR, out of sample, net of costs + ISK tax, 100,000 SEK
+====================================================================================================
+                     Buy&Hold OMXS30  Momentum 12m top10  ML online top10
+days                          250.00              250.00           250.00
+total_return_pct               19.90               21.30             3.71
+annual_return_pct              20.07               21.49             3.74
+annual_vol_pct                 15.13               15.15            15.84
+sharpe                          1.28                1.36             0.31
+max_drawdown_pct              -11.20               -9.70           -13.40
+rebalances                      0.00               12.00            12.00
+cost_drag_pct                   0.00                0.90             2.69
+tax_drag_pct                    0.88                0.88             0.88
+pnl_sek                    19,898.62           21,302.58         3,708.20
+sek_per_trading_day            79.59               85.21            14.83
+worst_day_pct                  -3.53               -2.97            -3.61
+best_day_pct                    4.25                2.93             3.37
+pct_days_negative              47.20               46.00            46.80
+
+====================================================================================================
+FULL WALK-FORWARD 2017-01-10 -> 2026-10-13 (every day out of sample)
+====================================================================================================
+                     Buy&Hold OMXS30  Momentum 12m top10  ML online top10
+days                        2,453.00            2,453.00         2,453.00
+total_return_pct               99.07              126.36            14.49
+annual_return_pct               7.33                8.75             1.40
+annual_vol_pct                 17.21               12.53            12.61
+sharpe                          0.50                0.73             0.17
+max_drawdown_pct              -32.05              -22.34           -36.58
+rebalances                      0.00               88.00            88.00
+cost_drag_pct                   0.00                9.13            19.21
+tax_drag_pct                    8.64                8.64             8.64
+pnl_sek                    99,065.08          126,360.81        14,492.48
+sek_per_trading_day            40.39               51.51             5.91
+worst_day_pct                 -10.57               -4.82            -4.58
+best_day_pct                    7.09                3.18             3.56
+pct_days_negative              47.09               63.19            64.90
+
+====================================================================================================
+YEAR BY YEAR annual return % (net). The ML model has to win MOST years, not one, to be real.
+====================================================================================================
+      Buy&Hold  Momentum     ML ML beats B&H
+year                                        
+2017      3.54      9.29  -5.57           no
+2018    -11.46     -7.48 -10.26          yes
+2019     24.69      6.29  -5.78           no
+2020      4.87      6.76   3.44           no
+2021     27.93     23.54  26.70           no
+2022    -16.30    -12.42  -7.15          yes
+2023     16.33     15.44   9.93           no
+2024      2.63     19.72   6.76          yes
+2025     15.09     15.20   1.07           no
+2026     12.88     14.52  -0.66           no
+
+ML beat buy-and-hold in 3 of 10 years.
+
+====================================================================================================
+CAPITAL NEEDED FOR 50 SEK/TRADING DAY using the full-period annual return (not last year's)
+====================================================================================================
+Buy&Hold   ann   7.33%  ->       171,925 SEK
+ML         ann   1.40%  ->       899,958 SEK

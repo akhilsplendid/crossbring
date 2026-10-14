@@ -19,7 +19,7 @@ Crossbring is a portfolio-ready, production-style data platform. It demonstrates
 - crossbring-jobs-marketplace - Trino catalog for curated JobModel datasets
 - crossbring-kafka-gitops-blueprints - ArgoCD apps, manifests, and Helm chart for GitOps
 - crossbring-jobs-batch-extractor - Batch fallback when CDC is restricted (pull->upsert or publish->Kafka)
-- crossbring-quant-research - Walk-forward backtest of simple Swedish-equity strategies with retail costs (research only)
+- crossbring-quant-research - Walk-forward backtests and a continuously retrained ML model for Swedish equities with retail costs, plus a daily paper-trading loop (research only)
 
 ## Quickstart (Local)
 1) Apply JobModel
