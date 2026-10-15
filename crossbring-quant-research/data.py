@@ -29,9 +29,15 @@ def load_prices(start: str, end: str | None = None, refresh: bool = False) -> pd
     # Drop tickers with too much missing history (delisted / renamed).
     keep = close.columns[close.notna().mean() > 0.95]
     close = close[keep].ffill().dropna(how="all")
-    # Drop a trailing partial bar (today's intraday row has volume 0 on Yahoo).
-    vol = raw["Volume"][INDEX_TICKER]
-    if vol.iloc[-1] == 0 and len(close) > 1:
+    # Drop a trailing partial bar only while the Stockholm market is still open.
+    # Yahoo shows today's row with volume 0 for hours after the 17:30 close, so a
+    # volume-based rule alone would leave the pipeline one day stale forever.
+    from datetime import datetime
+    from zoneinfo import ZoneInfo
+    now_sthlm = datetime.now(ZoneInfo("Europe/Stockholm"))
+    last_is_today = close.index[-1].date() == now_sthlm.date()
+    market_open = (now_sthlm.hour, now_sthlm.minute) < (17, 45)
+    if last_is_today and market_open and len(close) > 1:
         close = close.iloc[:-1]
     close.to_csv(path)
     return close
