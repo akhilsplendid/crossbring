@@ -21,14 +21,21 @@ def load_prices(start: str, end: str | None = None, refresh: bool = False) -> pd
     """Return adjusted close prices, one column per ticker, index = trading days."""
     os.makedirs(CACHE, exist_ok=True)
     path = os.path.join(CACHE, f"prices_{start}_{end or 'latest'}.csv")
-    if os.path.exists(path) and not refresh:
-        return pd.read_csv(path, index_col=0, parse_dates=True)
+    cached = pd.read_csv(path, index_col=0, parse_dates=True) if os.path.exists(path) else None
+    if cached is not None and not refresh:
+        return cached
     tickers = OMXS30_TICKERS + [INDEX_TICKER]
     raw = yf.download(tickers, start=start, end=end, auto_adjust=True, progress=False)
     close = raw["Close"].copy()
     # Drop tickers with too much missing history (delisted / renamed).
     keep = close.columns[close.notna().mean() > 0.95]
-    close = close[keep].ffill().dropna(how="all")
+    close = close[keep].dropna(how="all")
+    # A date where most stocks are missing is a feed gap, not a trading day. Yahoo has
+    # been seen to drop a whole Stockholm session retroactively. Remove such rows instead
+    # of forward-filling them, which would fake a zero-return day.
+    stocks = [c for c in close.columns if c != INDEX_TICKER]
+    close = close[close[stocks].isna().mean(axis=1) <= 0.5]
+    close = close.ffill()
     # Drop a trailing partial bar only while the Stockholm market is still open.
     # Yahoo shows today's row with volume 0 for hours after the 17:30 close, so a
     # volume-based rule alone would leave the pipeline one day stale forever.
@@ -39,5 +46,15 @@ def load_prices(start: str, end: str | None = None, refresh: bool = False) -> pd
     market_open = (now_sthlm.hour, now_sthlm.minute) < (17, 45)
     if last_is_today and market_open and len(close) > 1:
         close = close.iloc[:-1]
+    # Merge with the cache: fresh values win, but dates the feed has lost since the
+    # last download are kept from the cache rather than erased.
+    if cached is not None:
+        close = close.combine_first(cached).sort_index()
+    # A row where every stock equals the previous row is a forward-filled gap that got
+    # into the cache before the guard above existed. Drop it.
+    import numpy as np
+    prev = close[stocks].shift(1)
+    same = np.isclose(close[stocks].values, prev.values, rtol=1e-6).all(axis=1) & prev.notna().all(axis=1).values
+    close = close[~same]
     close.to_csv(path)
     return close

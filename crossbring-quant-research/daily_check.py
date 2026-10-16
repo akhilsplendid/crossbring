@@ -49,8 +49,9 @@ def main():
     paper_ret, idx_ret = eq.iloc[-1] - 1, ix.iloc[-1] - 1
     dd = (eq / eq.cummax() - 1).min()
     days = len(trading_days) - 1
+    # Coverage = trading days (per the price feed) that have a recorded run.
     expected_runs = len(trading_days)
-    coverage = targets.shape[0] / expected_runs if expected_runs else 1.0
+    coverage = targets.index.isin(trading_days).sum() / expected_runs if expected_runs else 1.0
 
     print(f"\nPaper portfolio  {100*paper_ret:+.2f}%  ({paper_ret*capital:+,.0f} SEK, "
           f"{paper_ret*capital/max(days,1):+,.0f} SEK/day)")
