@@ -5,3 +5,4 @@ One line per trading day, written by the scheduled session. Format:
 
 2026-10-14 | paper +0 SEK (+0.00%) | OMXS30 +0.00% | maxDD 0.00% | rebalanced yes | trial day 0: first portfolio set at 2026-10-13 close (ridge top10, risk ON); scheduled runs start 2026-10-15 18:40 Stockholm
 2026-10-15 | paper +1,206 SEK (+1.21%) | OMXS30 -0.64% | maxDD 0.00% | rebalanced no | trial day 2: first scheduled run OK; fixed data.py so the day-of close is kept after 17:45 Stockholm (was dropping it as intraday), model/params unchanged
+2026-10-16 | paper +2,469 SEK (+2.47%) | OMXS30 +0.60% | maxDD 0.00% | rebalanced no | trial day 3: run delayed ~50 min by a usage-limit pause, data current through today close; Yahoo had dropped the 10-15 session overnight, loader hardened and the day rebuilt from hourly bars (see commits a484a5d, 40e688b)
