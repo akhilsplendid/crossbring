@@ -137,4 +137,8 @@ LightGBM's thread pool oversubscribes and they crawl.
   are missing, which flatters every strategy including buy-and-hold.
 - One year out of sample is one draw. A strategy needs several regimes before you trust
   it. Extend `--data-start` and move `--oos-start` back to test other years.
-- Yahoo data is free and occasionally wrong. Fine for research, not for live trading.
+- Yahoo data is free and occasionally wrong. On 2026-10-16 it dropped the whole previous
+  Stockholm session for every stock. The loader now drops such gap rows instead of
+  forward-filling them, rebuilds a lost session from the last hourly bar (which matches
+  the official close), and never lets a worse download overwrite the cache. Fine for
+  research and paper trading; a paid feed is still the answer before real money.

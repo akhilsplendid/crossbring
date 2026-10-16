@@ -17,6 +17,30 @@ INDEX_TICKER = "^OMX"
 CACHE = os.path.join(os.path.dirname(__file__), "data_cache")
 
 
+def _recover_from_intraday(tickers: list[str], dates) -> pd.DataFrame | None:
+    """Rebuild daily closes for `dates` from the last 60-minute bar of each day.
+    Yahoo keeps ~730 days of hourly data; older gaps cannot be recovered this way."""
+    dates = [d for d in dates if (pd.Timestamp.now() - d).days < 700]
+    if not dates:
+        return None
+    lo, hi = min(dates), max(dates) + pd.Timedelta(days=1)
+    try:
+        intra = yf.download(tickers, start=lo.strftime("%Y-%m-%d"), end=hi.strftime("%Y-%m-%d"),
+                            interval="60m", auto_adjust=True, progress=False)["Close"]
+    except Exception:
+        return None
+    if intra.empty:
+        return None
+    intra.index = intra.index.tz_convert("Europe/Stockholm").tz_localize(None)
+    daily = intra.groupby(intra.index.normalize()).last()
+    daily = daily.reindex([d.normalize() for d in dates]).dropna(how="all")
+    if daily.empty:
+        return None
+    print(f"data: recovered {len(daily)} lost session(s) from hourly bars: "
+          f"{[d.date().isoformat() for d in daily.index]}")
+    return daily
+
+
 def load_prices(start: str, end: str | None = None, refresh: bool = False) -> pd.DataFrame:
     """Return adjusted close prices, one column per ticker, index = trading days."""
     os.makedirs(CACHE, exist_ok=True)
@@ -34,7 +58,14 @@ def load_prices(start: str, end: str | None = None, refresh: bool = False) -> pd
     # been seen to drop a whole Stockholm session retroactively. Remove such rows instead
     # of forward-filling them, which would fake a zero-return day.
     stocks = [c for c in close.columns if c != INDEX_TICKER]
-    close = close[close[stocks].isna().mean(axis=1) <= 0.5]
+    gap_dates = close.index[close[stocks].isna().mean(axis=1) > 0.5]
+    close = close.drop(gap_dates)
+    # Second source for a lost session: Yahoo's hourly bars usually survive when the
+    # daily bar vanishes, and the last hourly bar's close equals the official close.
+    recovered = _recover_from_intraday(list(close.columns), gap_dates)
+    if recovered is not None:
+        close = pd.concat([close, recovered]).sort_index()
+        close = close[~close.index.duplicated(keep="last")]
     close = close.ffill()
     # Drop a trailing partial bar only while the Stockholm market is still open.
     # Yahoo shows today's row with volume 0 for hours after the 17:30 close, so a
