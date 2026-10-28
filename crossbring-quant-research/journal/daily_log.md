@@ -13,3 +13,4 @@ One line per trading day, written by the scheduled session. Format:
 2026-10-23 | paper +985 SEK (+0.99%) | OMXS30 -3.11% | maxDD -2.15% | rebalanced no | trial day 8: normal run, data current through today close, day P&L +725 SEK
 2026-10-26 | paper +1,914 SEK (+1.91%) | OMXS30 -1.60% | maxDD -2.15% | rebalanced no | trial day 9: normal run, data current through today close, day P&L +922 SEK; DST ended, schedule still fires 18:41 local
 2026-10-27 | paper +2,726 SEK (+2.73%) | OMXS30 -0.65% | maxDD -2.15% | rebalanced no | trial day 10: normal run, data current through today close, day P&L +799 SEK
+2026-10-28 | paper +3,222 SEK (+3.22%) | OMXS30 -0.33% | maxDD -2.15% | rebalanced no | trial day 11: normal run, data current through today close, day P&L +485 SEK
