@@ -84,7 +84,11 @@ def main():
         prev_date = prev["date"].max()
         prev_w = prev[prev["date"] == prev_date].set_index("ticker")["weight"]
         prev_risk_on = bool(prev_w.sum() > 0)
-        days_since = len(prices.loc[prev_date:today]) - 1
+        # Count trading days from the last actual rebalance, not from yesterday's
+        # carried-forward row, otherwise the portfolio would never rotate.
+        reb_rows = prev[prev["rebalanced"] == True] if "rebalanced" in prev else prev
+        last_reb = reb_rows["date"].max() if len(reb_rows) else prev_date
+        days_since = len(prices.loc[last_reb:today]) - 1
         if prev_risk_on != (risk_on or a.no_regime_filter):
             reason = "regime flipped"
         elif days_since >= a.rebalance_days:
