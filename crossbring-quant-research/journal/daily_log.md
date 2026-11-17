@@ -27,3 +27,4 @@ One line per trading day, written by the scheduled session. Format:
 2026-11-12 | paper +8,085 SEK (+8.09%) | OMXS30 +2.44% | maxDD -2.15% | rebalanced no | trial day 22: normal run, data current through today close, first day on new basket, day P&L +54 SEK gross, net of ~120 SEK rotation cost
 2026-11-13 | paper +8,299 SEK (+8.30%) | OMXS30 +2.36% | maxDD -2.15% | rebalanced no | trial day 23: normal run (fresh container, deps reinstalled), data current through today close, day P&L +199 SEK
 2026-11-16 | paper +7,643 SEK (+7.64%) | OMXS30 +1.90% | maxDD -2.15% | rebalanced no | trial day 24: normal run, data current through today close, day P&L -604 SEK
+2026-11-17 | paper +6,004 SEK (+6.00%) | OMXS30 +0.24% | maxDD -2.15% | rebalanced no | trial day 25: normal run, data current through today close, day P&L -1,520 SEK (worst day so far) on a -1.6% index day
