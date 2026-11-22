@@ -108,6 +108,7 @@ def main():
                           "sek": round(capital * h["weight"]), "return_since_rebalance_pct": round(100 * since, 2),
                           "predicted_excess_pct": round(100 * h["pred_excess_ret"], 2)})
     hold_rows.sort(key=lambda r: -r["return_since_rebalance_pct"])
+    summary[0]["positions"] = len(hold_rows)   # 0 means the regime rule has the portfolio in cash
 
     code = open(os.path.abspath(__file__)).read()
     meta = [{"label": "dashboard_export.py", "value": code, "type": "code", "lang": "python"},
