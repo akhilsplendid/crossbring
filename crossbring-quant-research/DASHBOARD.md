@@ -28,6 +28,7 @@ Use the claude-artifacts tools, one call at a time (parallel calls to that servi
    but only after its dataset points at the new one.
 
 Do not change the page files (`files/index.html`, `files/app.js`) or the dataset titles in
-a refresh. If the artifact tools are unavailable in a run, skip the refresh, say so in the
+a refresh. A reference copy of both lives in `dashboard_page/`; the copy in the dashboard is
+the live one, and a deliberate page change updates both. If the artifact tools are unavailable in a run, skip the refresh, say so in the
 reply, and leave the journal steps unaffected. The dashboard then shows as stale until the
 next successful refresh, and nothing else breaks.

@@ -1,0 +1,126 @@
+<meta name="dash-one-writer">
+<style>
+.qt { display: flex; flex-direction: column; gap: var(--cds-gap-lg); font-family: var(--font-anthropic-sans); color: var(--color-fg); }
+.qt-head { display: flex; flex-direction: column; gap: var(--cds-gap-sm); }
+.qt-title { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: var(--cds-font-size-title); margin: 0; }
+.qt-lede { font-size: var(--cds-font-size-body); margin: 0; max-width: 72ch; line-height: 1.5; }
+.qt-note { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: 0; max-width: 72ch; line-height: 1.5; }
+.qt-h2 { font-size: var(--cds-font-size-heading); font-weight: var(--cds-font-weight-medium); margin: 0 0 var(--cds-gap-xs); }
+.qt-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: var(--cds-gap-md); }
+.qt-card { background: var(--color-panel); border: 1px solid var(--color-border-line); border-radius: var(--cds-radius); padding: var(--cds-pad-lg); min-width: 0; }
+.qt-tile-label { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); }
+.qt-tile-value { font-family: var(--font-anthropic-serif); font-weight: 400; font-size: clamp(1.5rem, 6vw, 2.1rem); line-height: 1.2; font-variant-numeric: tabular-nums; margin: var(--cds-gap-xs) 0; }
+.qt-unit { font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-body); color: var(--color-fg-muted); }
+.qt-tile-sub { font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); line-height: 1.5; font-variant-numeric: tabular-nums; }
+.qt-good { color: var(--color-ok); }
+.qt-bad { color: var(--color-bad); }
+.qt-pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--cds-gap-md); }
+.qt-legend { display: flex; flex-wrap: wrap; gap: var(--cds-gap-md); font-size: var(--cds-font-size-caption); color: var(--color-fg-muted); margin: var(--cds-gap-xs) 0 var(--cds-gap-sm); }
+.qt-key { display: inline-block; width: 16px; height: 2px; border-radius: 1px; vertical-align: middle; margin-right: 6px; }
+.qt-chart { position: relative; min-height: 240px; }
+.qt-chart-tall { min-height: 300px; }
+.qt-chart svg { display: block; overflow: visible; outline-offset: 4px; }
+.qt-chart text { font-family: var(--font-anthropic-sans); font-size: var(--cds-font-size-caption); fill: var(--cds-text-secondary); font-variant-numeric: tabular-nums; }
+.qt-tip { position: absolute; pointer-events: none; z-index: 2; background: var(--cds-surface-popover); border: 1px solid var(--cds-border); box-shadow: var(--cds-shadow-popover); border-radius: var(--cds-radius); padding: 6px 10px; font-size: var(--cds-font-size-caption); white-space: nowrap; font-variant-numeric: tabular-nums; }
+.qt-tip[hidden] { display: none; }
+.qt-tip-head { color: var(--cds-text-secondary); margin-bottom: 2px; }
+.qt-tip-row { display: flex; align-items: center; gap: 6px; }
+.qt-tip-row strong { color: var(--color-fg); font-weight: var(--cds-font-weight-medium); }
+.qt-tip-row span.qt-tip-name { color: var(--cds-text-secondary); }
+.qt-fail { color: var(--color-fg-muted); font-size: var(--cds-font-size-caption); margin: 0; }
+.qt-scroll { overflow-x: auto; }
+.qt-table { border-collapse: collapse; width: 100%; font-size: var(--cds-font-size-caption); font-variant-numeric: tabular-nums; }
+.qt-table th { text-align: left; font-weight: var(--cds-font-weight-medium); color: var(--color-fg-muted); padding: 6px 12px 6px 0; border-bottom: 1px solid var(--color-border-line); white-space: nowrap; }
+.qt-table td { padding: 6px 12px 6px 0; border-bottom: 1px solid var(--color-border-line); }
+.qt-table tr:last-child td { border-bottom: 0; }
+.qt-table .qt-num { text-align: right; white-space: nowrap; }
+.qt-table td:first-child { white-space: nowrap; }
+.qt-res-pass::before { content: "\2713\00a0"; color: var(--color-ok); }
+.qt-res-wait::before { content: "\2026\00a0"; color: var(--color-warn); }
+.qt-details summary { cursor: pointer; font-size: var(--cds-font-size-body); font-weight: var(--cds-font-weight-medium); }
+.qt-details[open] summary { margin-bottom: var(--cds-gap-sm); }
+</style>
+<div class="qt">
+  <header class="qt-head">
+    <h1 class="qt-title" id="title">Quant paper trial</h1>
+    <p class="qt-lede" id="takeaway">After <b data-draw="days" data-source="summary" data-field="trading_days" data-row="0" class="dash-skeleton">—</b> trading days the paper portfolio stands at <b data-draw="paper-pct" data-source="summary" data-field="paper_pct" data-row="0" class="dash-skeleton">—</b> against <b data-draw="index-pct" data-source="summary" data-field="index_pct" data-row="0" class="dash-skeleton">—</b> for the OMXS30 index, a gap of <b data-draw="gap" data-source="summary" data-field="gap_points" data-row="0" class="dash-skeleton">—</b> points.</p>
+    <p class="qt-note" id="basis">Paper money only: no real orders have been placed. Closing prices through <span data-draw="asof" data-source="summary" data-field="as_of" data-row="0">—</span>, net of trading costs and ISK tax.</p>
+  </header>
+
+  <section class="qt-tiles" id="headline">
+    <div class="qt-card" id="tile-profit">
+      <div class="qt-tile-label">Paper profit since <span data-draw="start" data-source="summary" data-field="trial_start" data-row="0">—</span></div>
+      <div class="qt-tile-value"><span data-draw="paper-sek" data-source="summary" data-field="paper_sek" data-row="0" class="dash-skeleton">—</span> <span class="qt-unit">SEK</span></div>
+      <div class="qt-tile-sub"><span data-draw="paper-pct-toned" data-source="summary" data-field="paper_pct" data-row="0">—</span> on <span data-draw="capital" data-source="summary" data-field="capital_sek" data-row="0">—</span> SEK of paper capital</div>
+    </div>
+    <div class="qt-card" id="tile-gap">
+      <div class="qt-tile-label">Gap to the OMXS30 index</div>
+      <div class="qt-tile-value"><span data-draw="gap-toned" data-source="summary" data-field="gap_points" data-row="0" class="dash-skeleton">—</span> <span class="qt-unit">points</span></div>
+      <div class="qt-tile-sub">Index return over the same days: <span data-draw="index-pct" data-source="summary" data-field="index_pct" data-row="0">—</span></div>
+    </div>
+    <div class="qt-card" id="tile-drawdown">
+      <div class="qt-tile-label">Deepest drawdown so far</div>
+      <div class="qt-tile-value"><span data-draw="maxdd" data-source="summary" data-field="max_drawdown_pct" data-row="0" class="dash-skeleton">—</span></div>
+      <div class="qt-tile-sub">Now <span data-draw="dd-now" data-source="summary" data-field="drawdown_now_pct" data-row="0">—</span> below the peak. The go-live limit is <span data-draw="limit">—</span>.</div>
+    </div>
+    <div class="qt-card" id="tile-average">
+      <div class="qt-tile-label">Average profit per trading day</div>
+      <div class="qt-tile-value"><span data-draw="avg" data-source="summary" data-field="avg_sek_per_day" data-row="0" class="dash-skeleton">—</span> <span class="qt-unit">SEK</span></div>
+      <div class="qt-tile-sub">The target is <span data-draw="target">—</span> a day. <span data-draw="up-days" data-source="summary" data-field="up_days" data-row="0">—</span> up days, <span data-draw="down-days" data-source="summary" data-field="down_days" data-row="0">—</span> down days.</div>
+    </div>
+  </section>
+
+  <section class="qt-card" id="equity">
+    <h2 class="qt-h2">Cumulative return: paper portfolio against the index</h2>
+    <div class="qt-legend"><span><span class="qt-key qt-key-paper"></span>Paper portfolio</span><span><span class="qt-key qt-key-index"></span>OMXS30 index</span></div>
+    <div class="qt-chart qt-chart-tall dash-skeleton" data-draw="equity-chart" data-source="daily" id="chart-equity"></div>
+  </section>
+
+  <div class="qt-pair">
+    <section class="qt-card" id="daily-profit">
+      <h2 class="qt-h2">Profit or loss on each trading day, SEK</h2>
+      <p class="qt-note">Best day <span data-draw="best" data-source="summary" data-field="best_day_sek" data-row="0">—</span> SEK on <span data-draw="best-date" data-source="summary" data-field="best_day_date" data-row="0">—</span>. Worst day <span data-draw="worst" data-source="summary" data-field="worst_day_sek" data-row="0">—</span> SEK on <span data-draw="worst-date" data-source="summary" data-field="worst_day_date" data-row="0">—</span>.</p>
+      <div class="qt-chart dash-skeleton" data-draw="pnl-chart" data-source="daily" id="chart-pnl"></div>
+    </section>
+    <section class="qt-card" id="drawdown">
+      <h2 class="qt-h2">Drawdown: how far below its peak the portfolio is</h2>
+      <p class="qt-note">Drawdown is the fall from the highest value reached so far. The trial rules fail the model if it goes past the limit line.</p>
+      <div class="qt-chart dash-skeleton" data-draw="dd-chart" data-source="daily" id="chart-drawdown"></div>
+    </section>
+  </div>
+
+  <section class="qt-card" id="checklist">
+    <h2 class="qt-h2">Go-live checklist</h2>
+    <p class="qt-lede">Verdict: <b data-draw="verdict" data-source="summary" data-field="verdict" data-row="0">—</b>. The rules were fixed before the trial started. Real money is allowed only when all four criteria pass, and then at most 10% of capital. The next review is at 63 trading days.</p>
+    <div class="qt-scroll">
+      <table class="qt-table" data-source="checklist" data-row-key="criterion">
+        <thead><tr><th data-field="criterion">Criterion</th><th data-field="threshold">Threshold</th><th data-field="value">Now</th><th data-field="result">Result</th></tr></thead>
+        <tbody data-draw="checklist-rows"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="qt-card" id="basket">
+    <h2 class="qt-h2">Current basket</h2>
+    <p class="qt-note" data-when="invested"><span data-draw="positions" data-source="summary" data-field="positions" data-row="0">—</span> equal positions, last rotated on <span data-draw="last-reb" data-source="summary" data-field="last_rebalance" data-row="0">—</span>. Next rotation in <span data-draw="to-reb" data-source="summary" data-field="days_to_rebalance" data-row="0">—</span> trading days. Market regime: <span data-draw="regime" data-source="summary" data-field="regime" data-row="0">—</span>, with the index <span data-draw="sma-gap" data-source="summary" data-field="index_vs_sma200_pct" data-row="0">—</span> from its 200-day average. Below that average the rules move everything to cash.</p>
+    <p class="qt-lede" data-when="cash" hidden>The paper portfolio is in cash and holds no stocks. On <span data-draw="last-reb" data-source="summary" data-field="last_rebalance" data-row="0">—</span> the index closed below its 200-day average, and it now stands <span data-draw="sma-gap" data-source="summary" data-field="index_vs_sma200_pct" data-row="0">—</span> from it. The rules buy a new basket only when the index closes back above that average.</p>
+    <div class="qt-scroll" data-when="invested">
+      <table class="qt-table" data-source="holdings" data-row-key="ticker">
+        <thead><tr><th data-field="ticker">Ticker</th><th data-field="company">Company</th><th data-field="weight_pct" class="qt-num">Weight</th><th data-field="sek" class="qt-num">SEK</th><th data-field="return_since_rebalance_pct" class="qt-num">Since rotation</th><th data-field="predicted_excess_pct" class="qt-num">Model forecast</th></tr></thead>
+        <tbody data-draw="holdings-rows"></tbody>
+      </table>
+    </div>
+    <p class="qt-note" data-when="invested">Model forecast is the predicted 21-day return above the average stock, as of the latest run.</p>
+  </section>
+
+  <details class="qt-card qt-details" id="daily-table">
+    <summary>Daily numbers as a table</summary>
+    <div class="qt-scroll">
+      <table class="qt-table" data-source="daily" data-row-key="date">
+        <thead><tr><th data-field="date">Date</th><th data-field="paper_pct" class="qt-num">Paper return</th><th data-field="index_pct" class="qt-num">Index return</th><th data-field="day_pnl_sek" class="qt-num">Day, SEK</th><th data-field="drawdown_pct" class="qt-num">Drawdown</th></tr></thead>
+        <tbody data-draw="daily-rows"></tbody>
+      </table>
+    </div>
+  </details>
+</div>
+<script src="app.js"></script>
